@@ -18,5 +18,6 @@ public class Account {
         this.balance = this.balance + (effectValue);
     }
 
-
+    // TODO split setter i 2 (getPaid og loseMoney eller lign.)
+    // TODO lav hjælper metoden isBankrupt
 }
