@@ -1,24 +1,24 @@
 package gruppe27;
 
 public class DieCup {
-    private Die d1;
-    private Die d2;
+    public final Die Die1;
+    public final Die Die2;
 
-    public DieCup(Die d1, Die d2) {
-        this.d1 = d1;
-        this.d2 = d2;
+    public DieCup(Die die1, Die die2) {
+        this.Die1 = die1;
+        this.Die2 = die2;
     }
 
     public void roll() {
-        d1.roll();
-        d2.roll();
+        Die1.roll();
+        Die2.roll();
     }
 
     public boolean hasPair() {
-        return d1.getFace() == d2.getFace();
+        return Die1.getFace() == Die2.getFace();
     }
 
     public int getSum() {
-        return d1.getFace() + d2.getFace();
+        return Die1.getFace() + Die2.getFace();
     }
 }
