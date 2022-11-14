@@ -34,7 +34,7 @@ public class Game {
 
         // Make all the give to other players cards
         for (int i = 0; i < 4; i++) {
-            allChanceCards.add(ChanceCard.MultiActionCard(new ChanceCardAction(ChanceCardEvent.GIVE_TO_OTHER_PLAYER, i), takeAnotherCard));
+            allChanceCards.add(ChanceCard.MultiActionCard(new ChanceCardAction(ChanceCardEvent.GIVE_TO_OTHER_PLAYER, i), takeAnotherCard.copy()));
         }
 
         // Make the 2 move to (without any consequence) cards
@@ -57,7 +57,7 @@ public class Game {
         allChanceCards.add(ChanceCard.MultiChoiceCard(moveActions));
 
         // Make the move 1 or take another card, card
-        allChanceCards.add(ChanceCard.MultiChoiceCard(new ChanceCardAction(ChanceCardEvent.MOVE_RELATIVE, 1), takeAnotherCard));
+        allChanceCards.add(ChanceCard.MultiChoiceCard(new ChanceCardAction(ChanceCardEvent.MOVE_RELATIVE, 1), takeAnotherCard.copy()));
 
         // Make get out of jail free card
         allChanceCards.add(ChanceCard.SingleActionCard(new ChanceCardAction(ChanceCardEvent.GET_OUT_OF_JAIL_FREE, 0)));
