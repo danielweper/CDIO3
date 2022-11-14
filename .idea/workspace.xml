@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b118fe44-fa17-462d-845e-f5f3680f0409" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/gruppe27/GameGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="b118fe44-fa17-462d-845e-f5f3680f0409" name="Changes" comment="GameGUI.java started">
+      <change beforePath="$PROJECT_DIR$/src/main/java/gruppe27/GameGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gruppe27/GameGUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,8 +106,16 @@
       <option name="presentableId" value="Default" />
       <updated>1668007669377</updated>
       <workItem from="1668272279585" duration="310000" />
-      <workItem from="1668431288837" duration="318000" />
+      <workItem from="1668431288837" duration="442000" />
     </task>
+    <task id="LOCAL-00001" summary="GameGUI.java started">
+      <created>1668431684357</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1668431684357</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -124,5 +131,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="GameGUI.java started" />
+    <option name="LAST_COMMIT_MESSAGE" value="GameGUI.java started" />
   </component>
 </project>
