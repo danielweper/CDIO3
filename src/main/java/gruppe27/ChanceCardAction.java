@@ -9,6 +9,10 @@ public class ChanceCardAction {
         this.Value = value;
     }
 
+    public ChanceCardAction copy() {
+        return new ChanceCardAction(this.Event, this.Value);
+    }
+
     @Override
     public String toString() {
         return Event.toString() + " (value: " + Value + ")";
