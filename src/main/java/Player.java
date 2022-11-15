@@ -7,4 +7,12 @@ public class Player {
         this.Account = new Account(StartingBalance);
         this.ID = playerId;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Player p) {
+            return this.ID == p.ID;
+        }
+        return false;
+    }
 }
