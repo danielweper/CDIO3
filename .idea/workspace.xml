@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b118fe44-fa17-462d-845e-f5f3680f0409" name="Changes" comment="GUI form started">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b118fe44-fa17-462d-845e-f5f3680f0409" name="Changes" comment="GUI Board almost done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/gruppe27/GameGUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gruppe27/GameGUI.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/gruppe27/GameGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gruppe27/GameGUI.java" afterDir="false" />
@@ -45,6 +44,8 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "UI_DESIGNER_EDITOR_MODE.PaletteManager.WIDTH": "144",
+    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "218",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "C:/Users/zahe0/Desktop/DTU/1. Semester/Introductory Programming/cdio2",
     "project.structure.last.edited": "Project",
@@ -52,6 +53,11 @@
     "project.structure.side.proportion": "0.2"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Zaid\Documents\1.semester\CDIO\CDIO3\src\main\java\gruppe27" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.GameGUI">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DTU.gruppe27.App" />
@@ -67,7 +73,7 @@
       </method>
     </configuration>
     <configuration name="GameGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="18" />
+      <option name="ALTERNATIVE_JRE_PATH" value="$USER_HOME$/.jdks/corretto-18.0.2" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="gruppe27.GameGUI" />
       <module name="MonopolyJunior" />
@@ -135,7 +141,7 @@
       <option name="presentableId" value="Default" />
       <updated>1668007669377</updated>
       <workItem from="1668272279585" duration="310000" />
-      <workItem from="1668431288837" duration="6116000" />
+      <workItem from="1668431288837" duration="9235000" />
     </task>
     <task id="LOCAL-00001" summary="GameGUI.java started">
       <created>1668431684357</created>
@@ -151,7 +157,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668431917568</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="GUI Board almost done">
+      <created>1668469538035</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1668469538035</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -171,6 +184,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="GameGUI.java started" />
     <MESSAGE value="GUI form started" />
-    <option name="LAST_COMMIT_MESSAGE" value="GUI form started" />
+    <MESSAGE value="GUI Board almost done" />
+    <option name="LAST_COMMIT_MESSAGE" value="GUI Board almost done" />
   </component>
 </project>
