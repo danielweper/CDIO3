@@ -12,7 +12,7 @@ public class Game {
             players[i] = new Player("", 20);
         }
 
-        this.board = new Board(24);
+        // this.board = new Board(24);
         this.cards = new LinkedList<>();
 
         Random rng = new Random();
