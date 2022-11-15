@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ef40b22-f3fa-4f3b-897e-5afb333fdef3" name="Changes" comment="GameGUI.java started">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/gruppe27/Color.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/gruppe27/GameGUI.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/gruppe27/GameGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gruppe27/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gruppe27/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gruppe27/ChanceCardAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gruppe27/ChanceCardAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/gruppe27/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gruppe27/Game.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -74,8 +68,10 @@
       </method>
     </configuration>
     <configuration name="gruppe27.App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="18" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="gruppe27.App" />
-      <module name="CDIO3" />
+      <module name="MonopolyJunior" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="gruppe27.*" />
