@@ -1,12 +1,14 @@
 public class PropertyField extends GameField{
-    int fieldPris;
-    public PropertyField(int fieldPris){
-        this.fieldPris=fieldPris;
-
+    int fieldPrice;
+    Color color;
+    public PropertyField(int fieldPris,Color color){
+        this.fieldPrice =fieldPris;
+        this.color=color;
     }
-
-    public int  vurdering(){
-        return (fieldPris);
+    public int  assessment(){
+        return fieldPrice;
     }
-
+    public Color type(){
+        return color;
+    }
 }
