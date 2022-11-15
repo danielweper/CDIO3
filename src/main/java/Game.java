@@ -1,5 +1,3 @@
-package gruppe27;
-
 import java.util.*;
 
 public class Game {

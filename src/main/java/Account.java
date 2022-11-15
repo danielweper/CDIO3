@@ -1,5 +1,3 @@
-package gruppe27;
-
 public class Account {
 
     private int balance;

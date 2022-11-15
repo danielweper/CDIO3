@@ -1,5 +1,3 @@
-package gruppe27;
-
 public enum ChanceCardEvent {
     GIVE_TO_OTHER_PLAYER,
     TAKE_ANOTHER_CARD,

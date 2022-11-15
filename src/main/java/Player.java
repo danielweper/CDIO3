@@ -1,5 +1,3 @@
-package gruppe27;
-
 public class Player {
     // TODO stort variabelnavn
     public final String name;

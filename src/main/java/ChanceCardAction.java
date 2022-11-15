@@ -1,5 +1,3 @@
-package gruppe27;
-
 public class ChanceCardAction {
     public final ChanceCardEvent Event;
     public final int Value;

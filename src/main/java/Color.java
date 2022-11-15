@@ -1,5 +1,3 @@
-package gruppe27;
-
 public enum Color {
     BROWN,
     LIGHT_BLUE,
