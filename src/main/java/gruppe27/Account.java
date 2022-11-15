@@ -1,5 +1,7 @@
 package gruppe27;
 
+import javax.swing.*;
+
 public class Account {
 
     private int balance;
@@ -14,10 +16,13 @@ public class Account {
     }
 
     //Setter
-    public void updateBalance(int effectValue) {
-        this.balance = this.balance + (effectValue);
-    }
+    public void getPaid(int effectValue) {this.balance = this.balance + (effectValue);}
+    public void loseMoney(int effectValue) {this.balance = this.balance - (effectValue);}
 
-    // TODO split setter i 2 (getPaid og loseMoney eller lign.)
-    // TODO lav hjælper metoden isBankrupt
+    public boolean isBankrupt() {
+        if (balance < 0){
+            return true;
+    }
+        else {return false;}
+    }
 }

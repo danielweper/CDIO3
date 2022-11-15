@@ -11,7 +11,7 @@ public class Game {
     public Game(int playerCount) {
         this.players = new Player[playerCount];
         for (int i = 0; i < playerCount; i++) {
-            players[i] = new Player("", 20);
+            players[i] = new Player("", 20, i);
         }
 
         this.board = new Board(24);
