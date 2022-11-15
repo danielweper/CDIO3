@@ -11,4 +11,5 @@ public class PropertyField extends GameField{
     public Color type(){
         return color;
     }
+
 }
