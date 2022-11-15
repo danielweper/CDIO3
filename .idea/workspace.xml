@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b118fe44-fa17-462d-845e-f5f3680f0409" name="Changes" comment="GUI Board almost done">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,7 +54,12 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java" />
+      <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="C:\Users\Zaid\Documents\1.semester\CDIO\CDIO3\src\main\java\gruppe27" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
     </key>
   </component>
   <component name="RunManager" selected="Application.GameGUI">
@@ -70,14 +76,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GameGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-18" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="MAIN_CLASS_NAME" value="gruppe27.GameGUI" />
+      <option name="MAIN_CLASS_NAME" value="App" />
       <module name="MonopolyJunior" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="gruppe27.*" />
+          <option name="PATTERN" value=".*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -85,14 +91,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="gruppe27.App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="GameGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-18" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="MAIN_CLASS_NAME" value="gruppe27.App" />
+      <option name="MAIN_CLASS_NAME" value="GameGUI" />
       <module name="MonopolyJunior" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="gruppe27.*" />
+          <option name="PATTERN" value=".*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -104,7 +110,7 @@
       <module name="MonopolyJunior" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="gruppe27.*" />
+          <option name="PATTERN" value=".*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
