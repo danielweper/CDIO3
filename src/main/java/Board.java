@@ -1,8 +1,4 @@
-package gruppe27;
-
 public class Board {
-
-
     private int numberOfFields;
     private GameField[] fields;
     private int[] playerIndexesOnBoard;
@@ -12,7 +8,6 @@ public class Board {
         this.numberOfFields = fields.length;
         this.playerIndexesOnBoard = new int[numberOfPlayers];
 
-
         for (int i = 0; i < numberOfPlayers; i++) {
             this.playerIndexesOnBoard[i] = startField;
         }
@@ -20,21 +15,15 @@ public class Board {
 
 
     public GameField movePlayerByAmount(int playerByIndex, int moveAmount) {
-        int currentPlayerIndexOnBoard = this.playerIndexesOnBoard[playerByIndex];
-        int newIndexOnBoard = currentPlayerIndexOnBoard + moveAmount;
+        int currentPlayerIndex = this.playerIndexesOnBoard[playerByIndex];
+        int newIndex = (currentPlayerIndex + moveAmount) % numberOfFields;
 
-
-        newIndexOnBoard = newIndexOnBoard % numberOfFields;
-
-        return fields[newIndexOnBoard];
-
+        return movePlayerToField(playerByIndex, newIndex);
     }
 
     public GameField movePlayerToField(int playerByIndex, int field) {
         this.playerIndexesOnBoard[playerByIndex] = field;
         return fields[field];
     }
-
-
 }
 
