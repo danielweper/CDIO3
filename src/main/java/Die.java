@@ -1,5 +1,3 @@
-package gruppe27;
-
 public abstract class Die {
     protected int face;
 

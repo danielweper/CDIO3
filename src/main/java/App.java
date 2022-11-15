@@ -1,5 +1,3 @@
-package gruppe27;
-
 /**
  * Hello world!
  *

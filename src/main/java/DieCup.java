@@ -1,5 +1,3 @@
-package gruppe27;
-
 public class DieCup {
     public final Die Die1;
     public final Die Die2;

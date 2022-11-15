@@ -1,5 +1,3 @@
-package gruppe27;
-
 public enum LandOnAction {
     NOTHING,
     BUY_PROPERTY,
