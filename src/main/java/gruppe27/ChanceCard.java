@@ -48,15 +48,21 @@ public class ChanceCard {
 
         if (actions.length > 1) {
             sb.append('(');
-            sb.append(actions[0].toString());
+            sb.append('"');
+            sb.append(actions[0]);
+            sb.append('"');
             for (int i = 1; i < actions.length; i++) {
                 sb.append(" or ");
+                sb.append('"');
                 sb.append(actions[i]);
+                sb.append('"');
             }
             sb.append(')');
         }
         else {
+            sb.append('"');
             sb.append(actions[0].toString());
+            sb.append('"');
         }
 
         return sb.toString();
