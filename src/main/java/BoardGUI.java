@@ -3,15 +3,12 @@ import gui_main.GUI;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 public class BoardGUI{
 
         public static void main(String[] args) {
-                FullBoard();
-        }
-
-        public static void FullBoard(int size, ArrayList<Field> fields){
-                GUI_Field[] gui_fields = new GUI_Field[size];
-
+                GUI gui = new GUI();
+                gui.setDice(5,6);
         }
 }
