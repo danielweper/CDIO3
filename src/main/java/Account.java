@@ -8,13 +8,10 @@ public class Account {
         return balance;
     }
 
-    public void getPaid(int effectValue) {
+    public void getMoney(int effectValue) {
         this.balance = this.balance + (effectValue);
     }
 
-    public void loseMoney(int effectValue) {
-        this.balance = this.balance - (effectValue);
-    }
 
     public boolean isBankrupt() {
         return balance < 0;

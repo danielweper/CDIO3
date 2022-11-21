@@ -17,12 +17,14 @@ public class PlayerGUI extends GUI_Player{
         super(name, balance, car);
     }
 
-    //For loop
-
-
+    //Add Player
+    public static void AddPlayer() {
+        for (int i=0; i< MAX_Players; i++){
+            //Name and number
+        }
+    }
     //Movement
-
-    public static void movement(String[] args) {
+    public static void movement() {
         for (int i = 0; i < MAX_Players; i++){
 
         }

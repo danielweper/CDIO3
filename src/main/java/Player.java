@@ -1,10 +1,10 @@
 public class Player {
-    public final String Name;
-    public final Account Account;
+    public final String name;
+    public final Account account;
     public final int ID;
     public Player(String playerName, int StartingBalance, int playerId){
-        this.Name = playerName;
-        this.Account = new Account(StartingBalance);
+        this.name = playerName;
+        this.account = new Account(StartingBalance);
         this.ID = playerId;
     }
 
@@ -14,5 +14,13 @@ public class Player {
             return this.ID == p.ID;
         }
         return false;
+    }
+
+    public void updateBalance(int a){
+        account.getMoney(a);
+    }
+
+    public int getBalance(){
+        return account.getBalance();
     }
 }
