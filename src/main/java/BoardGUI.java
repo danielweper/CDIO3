@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class BoardGUI{
         static FieldGUI num_Fields = new FieldGUI();
-        private DieCup cup;
 
         public static void main(String[] args) {
                 GUI gui = new GUI(num_Fields.Showfields());
