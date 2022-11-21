@@ -2,10 +2,12 @@ import gui_fields.GUI_Car;
 import gui_fields.GUI_Player;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+import java.util.ArrayList;
 
 public class PlayerGUI extends GUI_Player{
     private String Name;
     private static final int MAX_Players = 4;
+    static ArrayList<GUI_Player> players = new ArrayList<>();
 
     public PlayerGUI(String name){
         super(name);
@@ -19,8 +21,9 @@ public class PlayerGUI extends GUI_Player{
 
     //Add Player
     public static void AddPlayer() {
-        for (int i=0; i< MAX_Players; i++){
+        for (int i=0; i< players.size(); i++){
             //Name and number
+
         }
     }
     //Movement
