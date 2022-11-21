@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class PlayerGUI extends GUI_Player{
     private String Name;
     private static final int MAX_Players = 4;
-    static ArrayList<GUI_Player> players = new ArrayList<>();
 
     public PlayerGUI(String name){
         super(name);
@@ -20,7 +19,14 @@ public class PlayerGUI extends GUI_Player{
     }
 
     //Add Player
-    public static void AddPlayer() {
+    /*TODO
+    *Player array (max 4 player)
+    * a for-loop
+    * asign cars
+    * movement
+    * Change balance
+     */
+    /*public static void AddPlayer() {
         for (int i=0; i< players.size(); i++){
             //Name and number
 
@@ -31,5 +37,5 @@ public class PlayerGUI extends GUI_Player{
         for (int i = 0; i < MAX_Players; i++){
 
         }
-    }
+    }*/
 }
