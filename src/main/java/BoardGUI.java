@@ -10,17 +10,14 @@ public class BoardGUI{
         private DieCup cup;
 
         public static void main(String[] args) {
-                //to show fields
                 GUI gui = new GUI(num_Fields.Showfields());
-                //GUI guiDie = new GUI();
                 SixSidedDie d1 = new SixSidedDie();
                 SixSidedDie d2 = new SixSidedDie();
 
 
-                //gui.setDice(d1.face,d2.face);
-
+                //https://github.com/diplomit-dtu/MatadorGUIGuide/blob/3.2.x/src/main/java/Terning.java
                 while (true){
-                        String choice = gui.getUserButtonPressed("Pick one",  "With two die");
+                        String choice = gui.getUserButtonPressed("",  "With two die");
                         if (choice.equals("With two die") ){
                                 gui.setDice(d1.face, d2.face);
                         }
