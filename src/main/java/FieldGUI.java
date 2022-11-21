@@ -5,11 +5,16 @@ import java.awt.Color;
 
 public class FieldGUI {
 
-    public static void Fieldgenerator(){
+    public static int FieldSize(){
+        return 24;
+    }
+    /*public static GenField[] Unce(){
+        //for(int i = 0; i < Size;i++){
+        // field[i] = new GUI_Street();
+        // }
         GUI_Field[] fields = new GUI_Field[24];
 
         GUI gui = new GUI(fields, Color.RED);
 
-
-    }
+    }*/
 }
