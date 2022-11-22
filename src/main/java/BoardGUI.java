@@ -13,6 +13,8 @@ public class BoardGUI{
                 SixSidedDie d1 = new SixSidedDie();
                 SixSidedDie d2 = new SixSidedDie();
 
+                Player[] players = makePlayers(4, gui);
+
 
                 //https://github.com/diplomit-dtu/MatadorGUIGuide/blob/3.2.x/src/main/java/Terning.java
                 while (true){
@@ -24,5 +26,13 @@ public class BoardGUI{
                         }
                 }
 
+        }
+        public static Player[] makePlayers(int amount, GUI gui) {
+                int startingBalance = (amount == 2) ? 20 : ((amount == 3) ? 18 : 16);
+                Player[] players = new Player[amount];
+                for (int i=0; i < amount; i++){
+                        players[i] = new Player(gui.getUserString("Player " + (i+1) + " what is your name?"), startingBalance, i);
+                }
+                return players;
         }
 }

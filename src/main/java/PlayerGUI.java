@@ -27,16 +27,10 @@ public class PlayerGUI extends GUI_Player{
     * Change balance
      */
 
-    /*public static void AddPlayer() {
-        for (int i=0; i< players.size(); i++){
-            //Name and number
-
-        }
-    }
     //Movement
     public static void movement() {
         for (int i = 0; i < MAX_Players; i++){
 
         }
-    }*/
+    }
 }
