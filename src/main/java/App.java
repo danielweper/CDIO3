@@ -43,11 +43,13 @@ public class App
             switch (gameAction) {
                 case BUY_PROPERTY -> {
                     PropertyField property = (PropertyField)movement.EndField;
+                    System.out.println("Property color: " + property.Color);
                     property.setOwner(currentPlayer);
                     currentPlayer.updateBalance(property.Value * -1);
                 }
                 case PAY_RENT -> {
                     PropertyField property = (PropertyField)movement.EndField;
+                    System.out.println("Property color: " + property.Color);
                     Player owner = property.getOwner();
 
                     int price = property.Value;
