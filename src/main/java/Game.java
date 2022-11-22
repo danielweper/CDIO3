@@ -165,11 +165,32 @@ public class Game {
         currentPlayer = (currentPlayer + 1) % 4;
     }
 
-    public void movePlayerBy(int amount) {
-        board.movePlayerByAmount(currentPlayer, amount);
+    public ChanceCard drawChanceCard() {
+        return cards.remove();
     }
 
-    public void movePlayerTo(int newField) {
-        board.movePlayerToField(currentPlayer, newField);
+    public void insertChanceCard(ChanceCard card) {
+        this.cards.add(card);
+    }
+
+    public PlayerMovement movePlayerBy(int amount) {
+        PlayerMovement movement = board.movePlayerByAmount(currentPlayer, amount);
+
+        // Pay the player if the passed start
+        if (movement.PassedStart) {
+            players[currentPlayer].updateBalance(2);
+        }
+
+        return movement;
+    }
+
+    public PlayerMovement movePlayerTo(int newField) {
+        PlayerMovement movement = board.movePlayerToField(currentPlayer, newField);
+
+        // Pay the player if the passed start
+        if (movement.PassedStart) {
+            players[currentPlayer].updateBalance(2);
+        }
+        return movement;
     }
 }
