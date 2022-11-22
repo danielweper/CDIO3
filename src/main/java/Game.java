@@ -1,4 +1,3 @@
-import java.lang.reflect.Field;
 import java.util.*;
 
 public class Game {
@@ -78,7 +77,7 @@ public class Game {
         // Make all the give to other players cards
         for (int i = 0; i < 4; i++) {
             card = new ChanceCard();
-            card.addAction(new ChanceCardAction(ChanceCardEvent.GIVE_TO_OTHER_PLAYER, i));
+            card.addAction(new ChanceCardAction(ChanceCardEvent.GIVE_CARD_TO_OTHER_PLAYER, i));
             card.addAction(takeAnotherCard.copy());
 
             allChanceCards.add(card);
