@@ -10,4 +10,9 @@ public class PlayerMovement {
         this.PassedStart = endIndex < startIndex;
         this.EndField = endField;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Moving from %d to %d (%s)", StartIndex, EndIndex, EndField.toString());
+    }
 }

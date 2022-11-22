@@ -16,6 +16,12 @@ public class App
             players[i] = new Player("Player " + (i+1), startingMoney, i);
         }
 
+        DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
+
         Game g = new Game(players);
+        while (true) {
+            cup.roll();
+            System.out.println("Rolled " + cup.getSum());
+        }
     }
 }
