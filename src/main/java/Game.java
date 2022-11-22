@@ -3,15 +3,16 @@ import java.util.*;
 public class Game {
     private int currentPlayer;
     private Player[] players;
+    private boolean[] playerInPrison;
     private Board board;
     private Queue<ChanceCard> cards;
-    private DieCup cup;
 
     public Game(Player[] players) {
         this.currentPlayer = 0;
         this.players = players;
+        this.playerInPrison = new boolean[players.length];
 
-        this.board = new Board(generateGameFields(), this.players.length, 0);
+        this.board = new Board(generateGameFields(), players.length, 0);
         this.cards = new LinkedList<>();
 
         Random rng = new Random();
@@ -164,8 +165,45 @@ public class Game {
         return players[currentPlayer];
     }
 
+    public Player getOwnerOfSet(Color colorOfSet) {
+        Player owner1 = null;
+        Player owner2 = null;
+        for (int i = 0; i < board.NUMBER_OF_FIELDS; i++) {
+            GameField field = board.getFieldAt(i);
+            if (!(field instanceof PropertyField)) {
+                continue;
+            }
+            PropertyField property = (PropertyField)field;
+            if (!property.Color.equals(colorOfSet)) {
+                if (owner1 == null) {
+                    owner1 = property.getOwner();
+                }
+                else {
+                    owner2 = property.getOwner();
+                }
+            }
+        }
+
+        if (owner1 == null || owner1.equals(owner2)) {
+            return owner1;
+        }
+        return null;
+    }
+
+    public void setPlayerInPrison(int playerIndex) {
+        playerInPrison[playerIndex] = true;
+    }
+
+    public void releasePlayerFromPrison(int playerIndex) {
+        playerInPrison[playerIndex] = false;
+    }
+
+    public boolean isPlayerInPrison(int playerIndex) {
+        return playerInPrison[playerIndex];
+    }
+
     public void nextTurn() {
-        currentPlayer = (currentPlayer + 1) % 4;
+        currentPlayer = (currentPlayer + 1) % players.length;
     }
 
     public ChanceCard drawChanceCard() {
@@ -195,5 +233,9 @@ public class Game {
             getCurrentPlayer().updateBalance(2);
         }
         return movement;
+    }
+
+    public void setPlayerPositionTo(int newPosition) {
+        board.movePlayerToField(currentPlayer, newPosition);
     }
 }
