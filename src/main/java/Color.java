@@ -1,7 +1,7 @@
 public enum Color {
     BROWN,
     LIGHT_BLUE,
-    PINK,
+    MAGENTA,
     ORANGE,
     RED,
     YELLOW,

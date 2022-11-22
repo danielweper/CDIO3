@@ -1,18 +1,18 @@
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class Game {
+    private int currentPlayer;
     private Player[] players;
     private Board board;
     private Queue<ChanceCard> cards;
     private DieCup cup;
 
-    public Game(int playerCount) {
-        this.players = new Player[playerCount];
-        for (int i = 0; i < playerCount; i++) {
-            players[i] = new Player("", 20, i);
-        }
+    public Game(Player[] players) {
+        this.currentPlayer = 0;
+        this.players = players;
 
-        // this.board = new Board(24);
+        this.board = new Board(generateGameFields(), this.players.length, 0);
         this.cards = new LinkedList<>();
 
         Random rng = new Random();
@@ -23,6 +23,47 @@ public class Game {
         }
 
         // TODO add cup?
+    }
+
+    private GameField[] generateGameFields() {
+        // Generate all the fields in the board
+        GameField[] fields = new GameField[24];
+
+        Color[] propertyColors = new Color[] {Color.BROWN, Color.LIGHT_BLUE, Color.MAGENTA, Color.ORANGE, Color.RED, Color.YELLOW};
+
+        // Make the first 3 sides of the board
+        int fieldIndex = 0;
+        for (int i = 0; i < 3; ++i) {
+            // Generate the "rest" field (start, visiting & free parking)
+            fields[fieldIndex++] = new GameField();
+            int propertyPrice = i+1;
+            int colorIndex = i * 2;
+
+            // Generate the first pair of properties (brown, magenta & red)
+            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyColors[colorIndex]);
+            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyColors[colorIndex]);
+
+            // Generate the chance field in the middle of the side
+            fields[fieldIndex++] = new ChanceField();
+
+            ++colorIndex;
+            // Generate the second pair of properties (light blue, orange & yellow)
+            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyColors[colorIndex]);
+            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyColors[colorIndex]);
+        }
+
+        // Generate the last side
+        fields[fieldIndex++] = new GoToPrisonField();
+        // Generate the green pair
+        fields[fieldIndex++] = new PropertyField(4, Color.GREEN);
+        fields[fieldIndex++] = new PropertyField(4, Color.GREEN);
+        // Generate the chance field on the last side
+        fields[fieldIndex++] = new ChanceField();
+        // Generate the dark blue pair
+        fields[fieldIndex++] = new PropertyField(5, Color.DARK_BLUE);
+        fields[fieldIndex++] = new PropertyField(5, Color.DARK_BLUE);
+
+        return fields;
     }
 
     private List<ChanceCard> generateChanceCards() {
@@ -104,7 +145,7 @@ public class Game {
         }
 
         // Make all the move to choice of cards
-        Color[][] colorChoices = new Color[][] { {Color.ORANGE, Color.GREEN}, {Color.PINK, Color.DARK_BLUE}, {Color.LIGHT_BLUE, Color.RED}, {Color.BROWN, Color.YELLOW}};
+        Color[][] colorChoices = new Color[][] { {Color.ORANGE, Color.GREEN}, {Color.MAGENTA, Color.DARK_BLUE}, {Color.LIGHT_BLUE, Color.RED}, {Color.BROWN, Color.YELLOW}};
         for (int i = 0; i < 4; i++) {
             Color[] choices = colorChoices[i];
             ChanceCardAction moveToFirstColorAction = new ChanceCardAction(ChanceCardEvent.MOVE_TO_COLOR, choices[0].ordinal());
@@ -118,5 +159,17 @@ public class Game {
 
         // Return the made array
         return allChanceCards;
+    }
+
+    public void nextTurn() {
+        currentPlayer = (currentPlayer + 1) % 4;
+    }
+
+    public void movePlayerBy(int amount) {
+        board.movePlayerByAmount(currentPlayer, amount);
+    }
+
+    public void movePlayerTo(int newField) {
+        board.movePlayerToField(currentPlayer, newField);
     }
 }
