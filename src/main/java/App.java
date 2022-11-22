@@ -8,7 +8,7 @@ public class App
     {
         System.out.println( "Hello World!" );
 
-        int playerCount = 2;
+        int playerCount = 4;
         int startingMoney = (new int[] {0, 0, 20, 18, 16})[playerCount];
 
         Player[] players = new Player[playerCount];
@@ -61,6 +61,7 @@ public class App
                     game.insertChanceCard(card);
                 }
                 case GO_TO_PRISON -> game.setPlayerInPrison(currentPlayer.ID);
+                case NOTHING -> {}
             }
 
             System.out.println(String.format("Ending %s's turn (money: %d)", currentPlayer.name, currentPlayer.getBalance()));
