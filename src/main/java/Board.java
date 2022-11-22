@@ -14,16 +14,17 @@ public class Board {
     }
 
 
-    public GameField movePlayerByAmount(int playerByIndex, int moveAmount) {
+    public PlayerMovement movePlayerByAmount(int playerByIndex, int moveAmount) {
         int currentPlayerIndex = this.playerIndexesOnBoard[playerByIndex];
         int newIndex = (currentPlayerIndex + moveAmount) % numberOfFields;
 
         return movePlayerToField(playerByIndex, newIndex);
     }
 
-    public GameField movePlayerToField(int playerByIndex, int field) {
+    public PlayerMovement movePlayerToField(int playerByIndex, int field) {
+        int start = playerIndexesOnBoard[playerByIndex];
         this.playerIndexesOnBoard[playerByIndex] = field;
-        return fields[field];
+        return new PlayerMovement(start, field, fields[field]);
     }
 }
 
