@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Hello world!
  *
@@ -8,7 +10,7 @@ public class App
     {
         System.out.println( "Hello World!" );
 
-        int playerCount = 4;
+        int playerCount = 2;
         int startingMoney = (new int[] {0, 0, 20, 18, 16})[playerCount];
 
         Player[] players = new Player[playerCount];
@@ -50,6 +52,7 @@ public class App
 
                     int price = property.Value;
                     if (owner.equals(game.getOwnerOfSet(property.Color))) {
+                        System.out.println("Owner owns both properties, so you have to pay double");
                         price *= 2;
                     }
                     currentPlayer.updateBalance(price * -1);
