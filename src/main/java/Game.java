@@ -160,6 +160,10 @@ public class Game {
         return allChanceCards;
     }
 
+    public Player getCurrentPlayer() {
+        return players[currentPlayer];
+    }
+
     public void nextTurn() {
         currentPlayer = (currentPlayer + 1) % 4;
     }
@@ -177,7 +181,7 @@ public class Game {
 
         // Pay the player if the passed start
         if (movement.PassedStart) {
-            players[currentPlayer].updateBalance(2);
+            getCurrentPlayer().updateBalance(2);
         }
 
         return movement;
@@ -188,7 +192,7 @@ public class Game {
 
         // Pay the player if the passed start
         if (movement.PassedStart) {
-            players[currentPlayer].updateBalance(2);
+            getCurrentPlayer().updateBalance(2);
         }
         return movement;
     }
