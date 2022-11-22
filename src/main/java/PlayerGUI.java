@@ -26,6 +26,7 @@ public class PlayerGUI extends GUI_Player{
     * movement
     * Change balance
      */
+
     /*public static void AddPlayer() {
         for (int i=0; i< players.size(); i++){
             //Name and number

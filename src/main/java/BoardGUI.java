@@ -18,6 +18,8 @@ public class BoardGUI{
                 while (true){
                         String choice = gui.getUserButtonPressed("",  "With two die");
                         if (choice.equals("With two die") ){
+                                d1.roll();
+                                d2.roll();
                                 gui.setDice(d1.face, d2.face);
                         }
                 }

@@ -14,7 +14,7 @@ public class FieldGUI {
     public GUI_Field[] Showfields() {
         fields[0] = new GUI_Start();
         //Color?
-        fields[0].setTitle("");
+        fields[0].setTitle("Level Start");
         fields[0].setSubText("");
 
         fields[1] = new GUI_Street();
