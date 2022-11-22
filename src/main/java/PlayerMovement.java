@@ -13,6 +13,6 @@ public class PlayerMovement {
 
     @Override
     public String toString() {
-        return String.format("Moving from %d to %d (%s)", StartIndex, EndIndex, EndField.toString());
+        return String.format("Moving from %d to %d (%s). Passed start: %b", StartIndex, EndIndex, EndField.toString(), PassedStart);
     }
 }
