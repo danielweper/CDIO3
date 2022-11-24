@@ -17,12 +17,12 @@ public class FieldGUI {
 
         fields[1] = new GUI_Street();
         fields[1].setTitle("Burger place");
-        fields[1].setSubText("");
+        fields[1].setSubText("1");
         fields[1].setBackGroundColor(brown);
 
         fields[2] = new GUI_Street();
         fields[2].setTitle("Pizzeria");
-        fields[2].setSubText("");
+        fields[2].setSubText("1");
         fields[2].setBackGroundColor(brown);
 
         fields[3] = new GUI_Chance();
@@ -33,26 +33,26 @@ public class FieldGUI {
 
         fields[4] = new GUI_Street();
         fields[4].setTitle("Candy store");
-        fields[4].setSubText("");
+        fields[4].setSubText("1");
         fields[4].setBackGroundColor(Color.CYAN);
 
         fields[5] = new GUI_Street();
         fields[5].setTitle("Ice cream stand");
-        fields[5].setSubText("");
+        fields[5].setSubText("1");
         fields[5].setBackGroundColor(Color.CYAN);
 
         fields[6] = new GUI_Jail();
         fields[6].setTitle("Jail");
-        fields[6].setSubText("");
+        fields[6].setSubText("visiting");
 
         fields[7] = new GUI_Street();
         fields[7].setTitle("Museum");
-        fields[7].setSubText("");
+        fields[7].setSubText("2");
         fields[7].setBackGroundColor(Color.MAGENTA);
 
         fields[8] = new GUI_Street();
         fields[8].setTitle("Library");
-        fields[8].setSubText("");
+        fields[8].setSubText("2");
         fields[8].setBackGroundColor(Color.MAGENTA);
 
         fields[9] = new GUI_Chance();
@@ -63,26 +63,27 @@ public class FieldGUI {
 
         fields[10] = new GUI_Street();
         fields[10].setTitle("Skate park");
-        fields[10].setSubText("");
+        fields[10].setSubText("2");
         fields[10].setBackGroundColor(Color.ORANGE);
 
         fields[11] = new GUI_Street();
         fields[11].setTitle("Swimming pool");
-        fields[11].setSubText("");
+        fields[11].setSubText("2");
         fields[11].setBackGroundColor(Color.ORANGE);
 
         fields[12] = new GUI_Refuge();
         fields[12].setTitle("Free parking");
-        fields[12].setSubText("");
+        fields[12].setSubText("Free parking");
+        fields[12].setBackGroundColor(Color.WHITE);
 
         fields[13] = new GUI_Street();
         fields[13].setTitle("Arcade");
-        fields[13].setSubText("");
+        fields[13].setSubText("3");
         fields[13].setBackGroundColor(Color.RED);
 
         fields[14] = new GUI_Street();
         fields[14].setTitle("Cinema");
-        fields[14].setSubText("");
+        fields[14].setSubText("3");
         fields[14].setBackGroundColor(Color.RED);
 
         fields[15] = new GUI_Chance();
@@ -93,26 +94,27 @@ public class FieldGUI {
 
         fields[16] = new GUI_Street();
         fields[16].setTitle("Toy store");
-        fields[16].setSubText("");
+        fields[16].setSubText("3");
         fields[16].setBackGroundColor(Color.YELLOW);
 
         fields[17] = new GUI_Street();
         fields[17].setTitle("Pet shop");
-        fields[17].setSubText("");
+        fields[17].setSubText("3");
         fields[17].setBackGroundColor(Color.YELLOW);
 
         fields[18] = new GUI_Jail();
         fields[18].setTitle("Go to jail");
-        fields[18].setSubText("");
+        fields[18].setSubText("Go to jail");
+        fields[18].setBackGroundColor(Color.GRAY);
 
         fields[19] = new GUI_Street();
         fields[19].setTitle("Bowling ally");
-        fields[19].setSubText("");
+        fields[19].setSubText("4");
         fields[19].setBackGroundColor(Color.GREEN);
 
         fields[20] = new GUI_Street();
         fields[20].setTitle("Zoo");
-        fields[20].setSubText("");
+        fields[20].setSubText("4");
         fields[20].setBackGroundColor(Color.GREEN);
 
         fields[21] = new GUI_Chance();
@@ -123,12 +125,12 @@ public class FieldGUI {
 
         fields[22] = new GUI_Street();
         fields[22].setTitle("Water park");
-        fields[22].setSubText("");
+        fields[22].setSubText("5");
         fields[22].setBackGroundColor(Color.BLUE);
 
         fields[23] = new GUI_Street();
         fields[23].setTitle("The beach");
-        fields[23].setSubText("");
+        fields[23].setSubText("5");
         fields[23].setBackGroundColor(Color.BLUE);
 
         return fields;
