@@ -37,7 +37,7 @@ public class App
             int sum = d1.face + d2.face;
 
             board.movePlayerByAmount(currentPlayer, sum);
-            ++currentPlayer;
+            currentPlayer = (currentPlayer + 1) % playerAmount;
         }
 
     }
