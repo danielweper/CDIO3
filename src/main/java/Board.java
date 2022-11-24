@@ -16,6 +16,11 @@ public class Board {
         this.NUMBER_OF_FIELDS = fields.length;
     }
 
+    public static GameField[] generateStandardFields() {
+        GameField[] GameField = new GameField[0];
+        return GameField;
+    }
+
 
     public PlayerMovement movePlayerByAmount(int playerByIndex, int moveAmount) {
         int currentPlayerIndex = this.playerIndexesOnBoard[playerByIndex];
