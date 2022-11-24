@@ -48,6 +48,7 @@ public class App
                     break;
                 }
                 playerPayMoney(currentPlayer, 1);
+                playersInPrison[currentPlayer] = false;
             }
 
             gui.showMessage(String.format("%s roll the dice", playerName));
@@ -70,6 +71,7 @@ public class App
                 case GO_TO_PRISON -> {
                     gui.showMessage(String.format("Unfortunately %s was caught speeding, and is sent to jail", playerName));
                     board.movePlayerToField(currentPlayer, 6);
+                    playersInPrison[currentPlayer] = true;
                 }
                 case BUY_PROPERTY -> {
                     PropertyField property = (PropertyField)movement.EndField;
