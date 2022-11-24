@@ -1,4 +1,4 @@
-public enum Color {
+public enum PropertyColor {
     BROWN,
     LIGHT_BLUE,
     MAGENTA,

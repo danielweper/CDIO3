@@ -34,8 +34,8 @@ public class Board {
         return fields[index];
     }
 
-    public int getPlayerPosition(int playerIndex) {
-        return playerIndexesOnBoard[playerIndex];
+    public int getPlayerPosition(int playerByIndex) {
+        return 0;
     }
 }
 

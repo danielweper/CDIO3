@@ -1,4 +1,11 @@
+import gui_fields.GUI_Car;
+import gui_fields.GUI_Field;
+import gui_fields.GUI_Player;
+import gui_main.GUI;
+
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Hello world!
@@ -6,77 +13,153 @@ import java.util.ArrayList;
  */
 public class App 
 {
-    public static void main(String[] args)
-    {
-        System.out.println( "Hello World!" );
+    static FieldGUI num_Fields = new FieldGUI();
+    static GUI_Player[] players;
+    static Player[] logicPlayers;
+    static boolean[] playersInPrison;
 
-        int playerCount = 2;
-        int startingMoney = (new int[] {0, 0, 20, 18, 16})[playerCount];
+    public static void main(String[] args) {
+        GUI gui = new GUI(num_Fields.Showfields());
+        SixSidedDie d1 = new SixSidedDie();
+        SixSidedDie d2 = new SixSidedDie();
 
-        Player[] players = new Player[playerCount];
-        for (int i = 0; i < playerCount; i++) {
-            players[i] = new Player("Player " + (i+1), startingMoney, i);
+        int playerAmount = 2;
+
+        players = makePlayers(playerAmount, gui);
+        logicPlayers = new Player[playerAmount];
+        for (int i = 0; i < playerAmount; ++i) {
+            GUI_Player guiPlayer = players[i];
+            logicPlayers[i] = new Player(guiPlayer.getName(), guiPlayer.getBalance(), guiPlayer.getNumber());
         }
+        playersInPrison = new boolean[playerAmount];
 
-        DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
+        BoardGUI board = new BoardGUI(players, gui);
 
-        Game game = new Game(players);
+        //https://github.com/diplomit-dtu/MatadorGUIGuide/blob/3.2.x/src/main/java/Terning.java
+        int currentPlayer = 0;
         while (true) {
-            cup.roll();
-            Player currentPlayer = game.getCurrentPlayer();
-            System.out.println(String.format("Starting %s's turn (money: %d)", currentPlayer.name, currentPlayer.getBalance()));
+            Player player = logicPlayers[currentPlayer];
+            String playerName = player.name;
+            if (playersInPrison[currentPlayer]) {
+                gui.showMessage(String.format("%s, to get out of jail, you have to pay 1 million in bail", playerName));
 
-            if (game.isPlayerInPrison(currentPlayer.ID)) {
-                System.out.println("Paying to get out of prison");
-                currentPlayer.updateBalance(-1);
-                game.releasePlayerFromPrison(currentPlayer.ID);
-                game.setPlayerPositionTo(6);
-                System.out.println("New balance: " + currentPlayer.getBalance());
+                if (player.getBalance() < 1) {
+                    gui.showMessage(String.format("%s unfortunately you cannot pay bail, and sit in prison for the rest of your life", playerName));
+                    break;
+                }
+                playerPayMoney(currentPlayer, 1);
+                playersInPrison[currentPlayer] = false;
             }
 
-            PlayerMovement movement = game.movePlayerBy(cup.getSum());
-            System.out.println("Rolled " + cup.getSum());
-            System.out.println("Movement: " + movement);
+            gui.showMessage(String.format("%s roll the dice", playerName));
 
-            LandOnAction gameAction = movement.EndField.landedOn(currentPlayer);
-            System.out.println("Action to perform: " + gameAction);
-            switch (gameAction) {
+            // Roll the dice
+            d1.roll();
+            d2.roll();
+            gui.setDice(d1.face, d2.face);
+            int sum = d1.face + d2.face;
+
+            // Move the player on the board
+            PlayerMovement movement = board.movePlayerByAmount(currentPlayer, sum);
+            if (movement.PassedStart) {
+                gui.showMessage(String.format("You made it all the way around the board %s! You get paid 2 million", playerName));
+                playerGetPaid(currentPlayer, 2);
+            }
+
+            LandOnAction action = movement.EndField.landedOn(player);
+            switch (action) {
+                case GO_TO_PRISON -> {
+                    gui.showMessage(String.format("Unfortunately %s was caught speeding, and is sent to jail", playerName));
+                    board.movePlayerToField(currentPlayer, 6);
+                    playersInPrison[currentPlayer] = true;
+                }
                 case BUY_PROPERTY -> {
                     PropertyField property = (PropertyField)movement.EndField;
-                    System.out.println("Property color: " + property.Color);
-                    property.setOwner(currentPlayer);
-                    currentPlayer.updateBalance(property.Value * -1);
+
+                    gui.showMessage(String.format("%s, you have been offered to buy this property. Do you accept?", playerName));
+
+                    if (player.getBalance() < property.Value) {
+                        gui.showMessage(String.format("%s you don't have enough money to buy this property, and is shamed by your friends", playerName));
+                        player.updateBalance(property.Value * -1);
+                    }
+                    else {
+                        playerPayMoney(currentPlayer, property.Value);
+                        property.setOwner(player);
+                    }
                 }
                 case PAY_RENT -> {
                     PropertyField property = (PropertyField)movement.EndField;
-                    System.out.println("Property color: " + property.Color);
                     Player owner = property.getOwner();
 
-                    int price = property.Value;
-                    if (owner.equals(game.getOwnerOfSet(property.Color))) {
-                        System.out.println("Owner owns both properties, so you have to pay double");
-                        price *= 2;
+                    gui.showMessage(String.format("%s you were staying at %s's property, and now have to pay rent", playerName, owner.name));
+
+                    int rent = property.Value;
+                    if (board.playerOwnsBothProperties(currentPlayer, property.PropertyColor)) {
+                        gui.showMessage(String.format("%s owns all properties around, and is now charging double for rent!", owner.name));
+                        rent *= 2;
                     }
-                    currentPlayer.updateBalance(price * -1);
-                    property.getOwner().updateBalance(price);
+
+                    if (player.getBalance() < rent) {
+                        gui.showMessage(String.format("%s you don't have enough money to pay for your stay. You are forced to work off your debt to %s", playerName, owner.name));
+                        player.updateBalance(rent * -1);
+                    }
+                    else {
+                        playerPayMoney(currentPlayer, rent);
+                        playerGetPaid(owner.ID, rent);
+                    }
                 }
                 case DRAW_CHANCE_CARD -> {
-                    ChanceCard card = game.drawChanceCard();
-                    System.out.println("Drew " + card);
-                    game.insertChanceCard(card);
+                    gui.displayChanceCard("You get a chance card!");
                 }
-                case GO_TO_PRISON -> game.setPlayerInPrison(currentPlayer.ID);
-                case NOTHING -> {}
             }
 
-            System.out.println(String.format("Ending %s's turn (money: %d)", currentPlayer.name, currentPlayer.getBalance()));
-            System.out.println();
-
-            if (currentPlayer.getBalance() < 0) {
+            if (player.account.isBankrupt()) {
                 break;
             }
-            game.nextTurn();
+
+            currentPlayer = (currentPlayer + 1) % playerAmount;
         }
-        System.out.println("GAME OVER");
+        gui.showMessage("Game is over");
+    }
+
+    private static void updatePlayerBalance(int playerIndex, int balanceChange) {
+        Player playerLogic = logicPlayers[playerIndex];
+        GUI_Player playerGUI = players[playerIndex];
+
+        playerLogic.updateBalance(balanceChange);
+        playerGUI.setBalance(playerLogic.getBalance());
+    }
+
+    private static void playerPayMoney(int playerIndex, int moneyToPay) {
+        updatePlayerBalance(playerIndex, moneyToPay * -1);
+    }
+
+    private static void playerGetPaid(int playerIndex, int moneyToGet) {
+        updatePlayerBalance(playerIndex, moneyToGet);
+    }
+
+    public static GUI_Player[] makePlayers(int amount, GUI gui) {
+        int startingBalance = (amount == 2) ? 20 : ((amount == 3) ? 18 : 16);
+        ArrayList<Color> colors = new ArrayList<>(Arrays.stream(new Color[] {Color.red, Color.blue, Color.black, Color.green, Color.magenta, Color.yellow}).toList());
+        ArrayList<String> colorStrings = new ArrayList<>();
+        for (Color color : colors) {
+            colorStrings.add(color.toString());
+        }
+
+        GUI_Player[] players = new GUI_Player[amount];
+        for (int i=0; i < amount; i++) {
+            String playerName = gui.getUserString("Player " + (i+1) + " what is your name?");
+            String[] colorStringArray = new String[colorStrings.size()];
+            String colorString = gui.getUserButtonPressed("Choose a color", colorStrings.toArray(colorStringArray));
+            Color playerColor = colors.get(colorStrings.indexOf(colorString));
+
+            GUI_Car playerCar = new GUI_Car(playerColor, playerColor, GUI_Car.Type.CAR, GUI_Car.Pattern.FILL);
+            players[i] = new GUI_Player(playerName, startingBalance, playerCar);
+
+            colors.remove(playerColor);
+            colorStrings.remove(colorString);
+            gui.addPlayer(players[i]);
+        }
+        return players;
     }
 }

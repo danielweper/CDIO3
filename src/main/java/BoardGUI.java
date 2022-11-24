@@ -1,28 +1,58 @@
 import gui_fields.*;
 import gui_main.GUI;
 
-import java.awt.Color;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
+public class BoardGUI {
+    private GUI gui;
+    private Board boardLogic;
+    private GUI_Player[] players;
 
-public class BoardGUI{
-        static FieldGUI num_Fields = new FieldGUI();
+    public BoardGUI(GUI_Player[] players, GUI gui) {
+        this.gui = gui;
+        this.players = players;
+        boardLogic = new Board(Board.generateStandardFields(), players.length, 0);
 
-        public static void main(String[] args) {
-                GUI gui = new GUI(num_Fields.Showfields());
-                SixSidedDie d1 = new SixSidedDie();
-                SixSidedDie d2 = new SixSidedDie();
-
-
-                //https://github.com/diplomit-dtu/MatadorGUIGuide/blob/3.2.x/src/main/java/Terning.java
-                while (true){
-                        String choice = gui.getUserButtonPressed("",  "With two die");
-                        if (choice.equals("With two die") ){
-                                d1.roll();
-                                d2.roll();
-                                gui.setDice(d1.face, d2.face);
-                        }
-                }
-
+        PlayerMovement moveToStart = new PlayerMovement(0, 0, null);
+        for (int i = 0; i < players.length; ++i) {
+            updatePlayerGraphicPosition(i, moveToStart);
         }
+    }
+
+    public PlayerMovement movePlayerByAmount(int playerId, int moveAmount) {
+        PlayerMovement movement = boardLogic.movePlayerByAmount(playerId, moveAmount);
+        updatePlayerGraphicPosition(playerId, movement);
+        return movement;
+    }
+
+    public PlayerMovement movePlayerToField(int playerId, int field) {
+        PlayerMovement movement = boardLogic.movePlayerToField(playerId, field);
+        updatePlayerGraphicPosition(playerId, movement);
+        return movement;
+    }
+
+    public boolean playerOwnsBothProperties(int playerId, PropertyColor propertyColor) {
+        for (int i = 0; i < boardLogic.NUMBER_OF_FIELDS; ++i) {
+            GameField field = boardLogic.getFieldAt(i);
+            if (!(field instanceof PropertyField)) {
+                continue;
+            }
+            PropertyField property = (PropertyField)field;
+            if (!property.PropertyColor.equals(propertyColor)) {
+                continue;
+            }
+            if (property.getOwner() == null || property.getOwner().ID != playerId) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void updatePlayerGraphicPosition(int playerId, PlayerMovement movement) {
+        GUI_Player playerToMove = players[playerId];
+
+        GUI_Field oldField = gui.getFields()[movement.StartIndex];
+        GUI_Field newField = gui.getFields()[movement.EndIndex];
+
+        oldField.setCar(playerToMove, false);
+        newField.setCar(playerToMove, true);
+    }
 }
