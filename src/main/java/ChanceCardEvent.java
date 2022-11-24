@@ -1,6 +1,5 @@
 public enum ChanceCardEvent {
     GIVE_CARD_TO_OTHER_PLAYER,
-    MOVE_TO_ANY_FIELD,
     TAKE_ANOTHER_CARD,
     MOVE_TO,
     MOVE_RELATIVE,
