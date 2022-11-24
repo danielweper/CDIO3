@@ -6,7 +6,7 @@ public class PropertyFieldTest extends TestCase {
     // asserNull: hvis en property eksistere gennemføres testen succefuldt
     // -----------------------------------------------------------------------------------
     public void testNoOwnerWhenPropertyFieldIsCreated(){
-        PropertyField propertyField = new PropertyField(2, Color.YELLOW);
+        PropertyField propertyField = new PropertyField(2, PropertyColor.YELLOW);
 
         assertNull(propertyField.getOwner());
     }
@@ -16,7 +16,7 @@ public class PropertyFieldTest extends TestCase {
     // assertNotNull: hvis der er en ejer gennemføres testen succefuldt
     // -----------------------------------------------------------------------------------
     public void testThereIsAnOwnerWhenPropertyHasBeenBought(){
-        PropertyField propertyField = new PropertyField(3, Color.GREEN);
+        PropertyField propertyField = new PropertyField(3, PropertyColor.GREEN);
 
         // *her sætter jeg en owner til at være Player og den player bliver lavet på samme linjie
         propertyField.setOwner(new Player("player1", 1000, 2));
@@ -32,7 +32,7 @@ public class PropertyFieldTest extends TestCase {
     // hvis spiller lander på eget felt og handlingen er Nothing gennemføres testen
     // -----------------------------------------------------------------------------------
     public void testIfPropertyIsOwnedByThePlayerAndThenLandOnActionIsNOTHING(){
-        PropertyField propertyField = new PropertyField(4,Color.GREEN);
+        PropertyField propertyField = new PropertyField(4, PropertyColor.GREEN);
         Player player = new Player("PropertyOwner", 1000, 1);
         propertyField.setOwner(player);
 
@@ -49,7 +49,7 @@ public class PropertyFieldTest extends TestCase {
     // assertEquals: når player lander på et ikke eget felt gennemføres testen succefuldt
     // -----------------------------------------------------------------------------------
     public  void testIfPropertyIsNotOwnedByAnyPlayerAndThenLandOnActionIsBuyProperty(){
-        PropertyField propertyField = new PropertyField(4, Color.GREEN);
+        PropertyField propertyField = new PropertyField(4, PropertyColor.GREEN);
         Player player = new Player("PropertyOwner", 1000, 2);
 
         LandOnAction expected = LandOnAction.BUY_PROPERTY;
@@ -63,7 +63,7 @@ public class PropertyFieldTest extends TestCase {
     // så gennemføres testen succefuldt
     // -----------------------------------------------------------------------------------
     public void testIfPropertyIsOwnedByAnotherPlayerAndThenLandOnActionIsPayRent(){
-        PropertyField propertyField = new PropertyField(4, Color.GREEN);
+        PropertyField propertyField = new PropertyField(4, PropertyColor.GREEN);
         Player player = new Player("NotPropertyOwner", 1000, 1);
         Player player1 = new Player("PropertyOwner", 1000, 2);
 
