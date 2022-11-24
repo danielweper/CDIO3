@@ -37,6 +37,7 @@ public class App
         int currentPlayer = 0;
         while (true) {
             Player player = logicPlayers[currentPlayer];
+
             gui.showMessage("Roll dice");
 
             // Roll the dice
@@ -47,9 +48,12 @@ public class App
 
             // Move the player on the board
             PlayerMovement movement = board.movePlayerByAmount(currentPlayer, sum);
+            if (movement.PassedStart) {
+                gui.showMessage("You get paid for doing a whole lap");
+                playerGetPaid(currentPlayer, 2);
+            }
 
             LandOnAction action = movement.EndField.landedOn(player);
-            gui.showMessage("Player should now " + action);
             switch (action) {
                 case GO_TO_PRISON -> {
                     gui.showMessage("You have been sent to prison");
@@ -59,15 +63,49 @@ public class App
                     gui.showMessage("You have to buy this property");
                     PropertyField property = (PropertyField)movement.EndField;
                     property.setOwner(player);
-                    player.updateBalance(property.Value * -1);
+                    playerPayMoney(currentPlayer, property.Value);
                 }
+                case PAY_RENT -> {
+                    gui.showMessage("You have to pay rent");
+                    PropertyField property = (PropertyField)movement.EndField;
+
+                    Player owner = property.getOwner();
+                    int rent = property.Value;
+                    if (board.playerOwnsBothProperties(currentPlayer, property.PropertyColor)) {
+                        gui.showMessage("Owner owns both properties, so rent is double");
+                        rent *= 2;
+                    }
+                    playerPayMoney(currentPlayer, rent);
+                    playerGetPaid(owner.ID, rent);
+                }
+                default -> gui.showMessage("Player should now " + action);
             }
 
+            if (player.account.isBankrupt()) {
+                break;
+            }
 
             currentPlayer = (currentPlayer + 1) % playerAmount;
         }
-
+        gui.showMessage("Game is over");
     }
+
+    private static void updatePlayerBalance(int playerIndex, int balanceChange) {
+        Player playerLogic = logicPlayers[playerIndex];
+        GUI_Player playerGUI = players[playerIndex];
+
+        playerLogic.updateBalance(balanceChange);
+        playerGUI.setBalance(playerLogic.getBalance());
+    }
+
+    private static void playerPayMoney(int playerIndex, int moneyToPay) {
+        updatePlayerBalance(playerIndex, moneyToPay * -1);
+    }
+
+    private static void playerGetPaid(int playerIndex, int moneyToGet) {
+        updatePlayerBalance(playerIndex, moneyToGet);
+    }
+
     public static GUI_Player[] makePlayers(int amount, GUI gui) {
         int startingBalance = (amount == 2) ? 20 : ((amount == 3) ? 18 : 16);
         ArrayList<Color> colors = new ArrayList<>(Arrays.stream(new Color[] {Color.red, Color.blue, Color.black, Color.green, Color.magenta, Color.yellow}).toList());

@@ -1,10 +1,10 @@
 public class PropertyField extends GameField{
     public final int Value;
-    public final Color Color;
+    public final PropertyColor PropertyColor;
     private Player owner;
-    public PropertyField(int fieldPris, Color color){
+    public PropertyField(int fieldPris, PropertyColor propertyColor){
         this.Value = fieldPris;
-        this.Color = color;
+        this.PropertyColor = propertyColor;
         this.owner = null;
     }
 

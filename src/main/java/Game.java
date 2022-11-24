@@ -29,7 +29,7 @@ public class Game {
         // Generate all the fields in the board
         GameField[] fields = new GameField[24];
 
-        Color[] propertyColors = new Color[] {Color.BROWN, Color.LIGHT_BLUE, Color.MAGENTA, Color.ORANGE, Color.RED, Color.YELLOW};
+        PropertyColor[] propertyPropertyColors = new PropertyColor[] {PropertyColor.BROWN, PropertyColor.LIGHT_BLUE, PropertyColor.MAGENTA, PropertyColor.ORANGE, PropertyColor.RED, PropertyColor.YELLOW};
 
         // Make the first 3 sides of the board
         int fieldIndex = 0;
@@ -40,28 +40,28 @@ public class Game {
             int colorIndex = i * 2;
 
             // Generate the first pair of properties (brown, magenta & red)
-            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyColors[colorIndex]);
-            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyColors[colorIndex]);
+            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyPropertyColors[colorIndex]);
+            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyPropertyColors[colorIndex]);
 
             // Generate the chance field in the middle of the side
             fields[fieldIndex++] = new ChanceField();
 
             ++colorIndex;
             // Generate the second pair of properties (light blue, orange & yellow)
-            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyColors[colorIndex]);
-            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyColors[colorIndex]);
+            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyPropertyColors[colorIndex]);
+            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyPropertyColors[colorIndex]);
         }
 
         // Generate the last side
         fields[fieldIndex++] = new GoToPrisonField();
         // Generate the green pair
-        fields[fieldIndex++] = new PropertyField(4, Color.GREEN);
-        fields[fieldIndex++] = new PropertyField(4, Color.GREEN);
+        fields[fieldIndex++] = new PropertyField(4, PropertyColor.GREEN);
+        fields[fieldIndex++] = new PropertyField(4, PropertyColor.GREEN);
         // Generate the chance field on the last side
         fields[fieldIndex++] = new ChanceField();
         // Generate the dark blue pair
-        fields[fieldIndex++] = new PropertyField(5, Color.DARK_BLUE);
-        fields[fieldIndex++] = new PropertyField(5, Color.DARK_BLUE);
+        fields[fieldIndex++] = new PropertyField(5, PropertyColor.DARK_BLUE);
+        fields[fieldIndex++] = new PropertyField(5, PropertyColor.DARK_BLUE);
 
         return fields;
     }
@@ -134,9 +134,9 @@ public class Game {
         allChanceCards.add(card);
 
         // Make all the move to specific color cards
-        Color[] specificColors = new Color[] {Color.ORANGE, Color.LIGHT_BLUE, Color.RED};
+        PropertyColor[] specificPropertyColors = new PropertyColor[] {PropertyColor.ORANGE, PropertyColor.LIGHT_BLUE, PropertyColor.RED};
         for (int i = 0; i < 3; i++) {
-            ChanceCardAction moveToColorAction = new ChanceCardAction(ChanceCardEvent.MOVE_TO_COLOR, specificColors[i].ordinal());
+            ChanceCardAction moveToColorAction = new ChanceCardAction(ChanceCardEvent.MOVE_TO_COLOR, specificPropertyColors[i].ordinal());
             card = new ChanceCard();
             card.addAction(moveToColorAction);
             card.addAction(getForFreeOrPayOwner.copy());
@@ -145,9 +145,9 @@ public class Game {
         }
 
         // Make all the move to choice of cards
-        Color[][] colorChoices = new Color[][] { {Color.ORANGE, Color.GREEN}, {Color.MAGENTA, Color.DARK_BLUE}, {Color.LIGHT_BLUE, Color.RED}, {Color.BROWN, Color.YELLOW}};
+        PropertyColor[][] propertyColorChoices = new PropertyColor[][] { {PropertyColor.ORANGE, PropertyColor.GREEN}, {PropertyColor.MAGENTA, PropertyColor.DARK_BLUE}, {PropertyColor.LIGHT_BLUE, PropertyColor.RED}, {PropertyColor.BROWN, PropertyColor.YELLOW}};
         for (int i = 0; i < 4; i++) {
-            Color[] choices = colorChoices[i];
+            PropertyColor[] choices = propertyColorChoices[i];
             ChanceCardAction moveToFirstColorAction = new ChanceCardAction(ChanceCardEvent.MOVE_TO_COLOR, choices[0].ordinal());
             ChanceCardAction moveToSecondColorAction = new ChanceCardAction(ChanceCardEvent.MOVE_TO_COLOR, choices[1].ordinal());
             card = new ChanceCard();
@@ -165,7 +165,7 @@ public class Game {
         return players[currentPlayer];
     }
 
-    public Player getOwnerOfSet(Color colorOfSet) {
+    public Player getOwnerOfSet(PropertyColor propertyColorOfSet) {
         Player owner1 = null;
         Player owner2 = null;
         for (int i = 0; i < board.NUMBER_OF_FIELDS; i++) {
@@ -174,7 +174,7 @@ public class Game {
                 continue;
             }
             PropertyField property = (PropertyField)field;
-            if (!property.Color.equals(colorOfSet)) {
+            if (!property.PropertyColor.equals(propertyColorOfSet)) {
                 if (owner1 == null) {
                     owner1 = property.getOwner();
                 }

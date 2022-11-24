@@ -38,7 +38,7 @@ public class Board {
         // Generate all the fields in the board
         GameField[] fields = new GameField[24];
 
-        Color[] propertyColors = new Color[] {Color.BROWN, Color.LIGHT_BLUE, Color.MAGENTA, Color.ORANGE, Color.RED, Color.YELLOW};
+        PropertyColor[] propertyPropertyColors = new PropertyColor[] {PropertyColor.BROWN, PropertyColor.LIGHT_BLUE, PropertyColor.MAGENTA, PropertyColor.ORANGE, PropertyColor.RED, PropertyColor.YELLOW};
 
         // Make the first 3 sides of the board
         int fieldIndex = 0;
@@ -49,28 +49,28 @@ public class Board {
             int colorIndex = i * 2;
 
             // Generate the first pair of properties (brown, magenta & red)
-            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyColors[colorIndex]);
-            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyColors[colorIndex]);
+            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyPropertyColors[colorIndex]);
+            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyPropertyColors[colorIndex]);
 
             // Generate the chance field in the middle of the side
             fields[fieldIndex++] = new ChanceField();
 
             ++colorIndex;
             // Generate the second pair of properties (light blue, orange & yellow)
-            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyColors[colorIndex]);
-            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyColors[colorIndex]);
+            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyPropertyColors[colorIndex]);
+            fields[fieldIndex++] = new PropertyField(propertyPrice, propertyPropertyColors[colorIndex]);
         }
 
         // Generate the last side
         fields[fieldIndex++] = new GoToPrisonField();
         // Generate the green pair
-        fields[fieldIndex++] = new PropertyField(4, Color.GREEN);
-        fields[fieldIndex++] = new PropertyField(4, Color.GREEN);
+        fields[fieldIndex++] = new PropertyField(4, PropertyColor.GREEN);
+        fields[fieldIndex++] = new PropertyField(4, PropertyColor.GREEN);
         // Generate the chance field on the last side
         fields[fieldIndex++] = new ChanceField();
         // Generate the dark blue pair
-        fields[fieldIndex++] = new PropertyField(5, Color.DARK_BLUE);
-        fields[fieldIndex++] = new PropertyField(5, Color.DARK_BLUE);
+        fields[fieldIndex++] = new PropertyField(5, PropertyColor.DARK_BLUE);
+        fields[fieldIndex++] = new PropertyField(5, PropertyColor.DARK_BLUE);
 
         return fields;
     }

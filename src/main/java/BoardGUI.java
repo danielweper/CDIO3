@@ -17,20 +17,37 @@ public class BoardGUI {
         }
     }
 
-    public PlayerMovement movePlayerByAmount(int playerIndex, int moveAmount) {
-        PlayerMovement movement = boardLogic.movePlayerByAmount(playerIndex, moveAmount);
-        updatePlayerGraphicPosition(playerIndex, movement);
+    public PlayerMovement movePlayerByAmount(int playerId, int moveAmount) {
+        PlayerMovement movement = boardLogic.movePlayerByAmount(playerId, moveAmount);
+        updatePlayerGraphicPosition(playerId, movement);
         return movement;
     }
 
-    public PlayerMovement movePlayerToField(int playerIndex, int field) {
-        PlayerMovement movement = boardLogic.movePlayerToField(playerIndex, field);
-        updatePlayerGraphicPosition(playerIndex, movement);
+    public PlayerMovement movePlayerToField(int playerId, int field) {
+        PlayerMovement movement = boardLogic.movePlayerToField(playerId, field);
+        updatePlayerGraphicPosition(playerId, movement);
         return movement;
     }
 
-    private void updatePlayerGraphicPosition(int playerIndex, PlayerMovement movement) {
-        GUI_Player playerToMove = players[playerIndex];
+    public boolean playerOwnsBothProperties(int playerId, PropertyColor propertyColor) {
+        for (int i = 0; i < boardLogic.NUMBER_OF_FIELDS; ++i) {
+            GameField field = boardLogic.getFieldAt(i);
+            if (!(field instanceof PropertyField)) {
+                continue;
+            }
+            PropertyField property = (PropertyField)field;
+            if (!property.PropertyColor.equals(propertyColor)) {
+                continue;
+            }
+            if (property.getOwner().ID != playerId) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void updatePlayerGraphicPosition(int playerId, PlayerMovement movement) {
+        GUI_Player playerToMove = players[playerId];
 
         GUI_Field oldField = gui.getFields()[movement.StartIndex];
         GUI_Field newField = gui.getFields()[movement.EndIndex];
