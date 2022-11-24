@@ -15,7 +15,6 @@ public class App
 {
     static FieldGUI num_Fields = new FieldGUI();
     static GUI_Player[] players;
-    static int[] playerPositions;
     public static void main(String[] args) {
         GUI gui = new GUI(num_Fields.Showfields());
         SixSidedDie d1 = new SixSidedDie();
@@ -24,12 +23,7 @@ public class App
         int playerAmount = 2;
 
         players = makePlayers(playerAmount, gui);
-        playerPositions = new int[playerAmount];
-
-        GUI_Field startField = gui.getFields()[0];
-        for (int i = 0; i < playerAmount; i++) {
-            startField.setCar(players[i], true);
-        }
+        BoardGUI board = new BoardGUI(players, gui);
 
         //https://github.com/diplomit-dtu/MatadorGUIGuide/blob/3.2.x/src/main/java/Terning.java
         int currentPlayer = 0;
@@ -42,8 +36,8 @@ public class App
             }
             int sum = d1.face + d2.face;
 
-            movePlayer(currentPlayer, sum, gui);
-            currentPlayer = (currentPlayer + 1) % playerAmount;
+            board.movePlayerByAmount(currentPlayer, sum);
+            ++currentPlayer;
         }
 
     }
@@ -70,16 +64,6 @@ public class App
             gui.addPlayer(players[i]);
         }
         return players;
-    }
-    public static void movePlayer(int playerIndex, int newPos, GUI gui){
-        int oldPos = playerPositions[playerIndex];
-        GUI_Player playerToMove = players[playerIndex];
-        GUI_Field oldField = gui.getFields()[oldPos];
-        oldField.setCar(playerToMove, false);
-        GUI_Field targetField = gui.getFields()[newPos];
-        targetField.setCar(playerToMove, true);
-
-        playerPositions[playerIndex] = newPos;
     }
 
     /*public static void main(String[] args)
