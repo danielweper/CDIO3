@@ -35,17 +35,34 @@ public class App
 
         //https://github.com/diplomit-dtu/MatadorGUIGuide/blob/3.2.x/src/main/java/Terning.java
         int currentPlayer = 0;
-        while (true){
-            String choice = gui.getUserButtonPressed("",  "With two die");
-            if (choice.equals("With two die") ){
-                d1.roll();
-                d2.roll();
-                gui.setDice(d1.face, d2.face);
-            }
+        while (true) {
+            Player player = logicPlayers[currentPlayer];
+            gui.showMessage("Roll dice");
+
+            // Roll the dice
+            d1.roll();
+            d2.roll();
+            gui.setDice(d1.face, d2.face);
             int sum = d1.face + d2.face;
 
+            // Move the player on the board
             PlayerMovement movement = board.movePlayerByAmount(currentPlayer, sum);
-            gui.showMessage("Player should now " + movement.EndField.landedOn(logicPlayers[currentPlayer]));
+
+            LandOnAction action = movement.EndField.landedOn(player);
+            gui.showMessage("Player should now " + action);
+            switch (action) {
+                case GO_TO_PRISON -> {
+                    gui.showMessage("You have been sent to prison");
+                    board.movePlayerToField(currentPlayer, 6);
+                }
+                case BUY_PROPERTY -> {
+                    gui.showMessage("You have to buy this property");
+                    PropertyField property = (PropertyField)movement.EndField;
+                    property.setOwner(player);
+                    player.updateBalance(property.Value * -1);
+                }
+            }
+
 
             currentPlayer = (currentPlayer + 1) % playerAmount;
         }
@@ -53,7 +70,7 @@ public class App
     }
     public static GUI_Player[] makePlayers(int amount, GUI gui) {
         int startingBalance = (amount == 2) ? 20 : ((amount == 3) ? 18 : 16);
-        ArrayList<Color> colors = new ArrayList<Color>(Arrays.stream(new Color[] {Color.red, Color.blue, Color.black, Color.green, Color.magenta, Color.yellow}).toList());
+        ArrayList<Color> colors = new ArrayList<>(Arrays.stream(new Color[] {Color.red, Color.blue, Color.black, Color.green, Color.magenta, Color.yellow}).toList());
         ArrayList<String> colorStrings = new ArrayList<>();
         for (Color color : colors) {
             colorStrings.add(color.toString());
