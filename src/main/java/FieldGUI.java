@@ -12,8 +12,8 @@ public class FieldGUI {
     private static final Color brown = new Color(0x993300);
 
     public GUI_Field[] Showfields() {
-        fields[0] = new GUI_Start("Start","","",Color.ORANGE, Color.WHITE);
-        fields[0].setSubText("Start her");
+        fields[0] = new GUI_Start("Start","","",Color.ORANGE, Color.BLACK);
+        fields[0].setSubText("Start here");
 
         fields[1] = new GUI_Street();
         fields[1].setTitle("Burger place");
