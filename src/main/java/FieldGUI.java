@@ -43,7 +43,7 @@ public class FieldGUI {
 
         fields[6] = new GUI_Jail();
         fields[6].setTitle("Jail");
-        fields[6].setSubText("visiting");
+        fields[6].setSubText("Visiting");
 
         fields[7] = new GUI_Street();
         fields[7].setTitle("Museum");
