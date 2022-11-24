@@ -26,5 +26,4 @@ public class PropertyField extends GameField{
         }
         return LandOnAction.PAY_RENT;
     }
-
 }

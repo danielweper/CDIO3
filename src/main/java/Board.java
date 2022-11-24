@@ -33,5 +33,9 @@ public class Board {
     public GameField getFieldAt(int index) {
         return fields[index];
     }
+
+    public int getPlayerPosition(int playerIndex) {
+        return playerIndexesOnBoard[playerIndex];
+    }
 }
 
