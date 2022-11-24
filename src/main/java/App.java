@@ -37,8 +37,9 @@ public class App
         int currentPlayer = 0;
         while (true) {
             Player player = logicPlayers[currentPlayer];
+            String playerName = player.name;
 
-            gui.showMessage("Roll dice");
+            gui.showMessage(String.format("%s roll the dice", playerName));
 
             // Roll the dice
             d1.roll();
@@ -49,34 +50,40 @@ public class App
             // Move the player on the board
             PlayerMovement movement = board.movePlayerByAmount(currentPlayer, sum);
             if (movement.PassedStart) {
-                gui.showMessage("You get paid for doing a whole lap");
+                gui.showMessage(String.format("You made it all the way around the board %s! You get paid 2 million", playerName));
                 playerGetPaid(currentPlayer, 2);
             }
 
             LandOnAction action = movement.EndField.landedOn(player);
             switch (action) {
                 case GO_TO_PRISON -> {
-                    gui.showMessage("You have been sent to prison");
+                    gui.showMessage(String.format("Unfortunately %s was caught speeding, and is sent to prison", playerName));
                     board.movePlayerToField(currentPlayer, 6);
                 }
                 case BUY_PROPERTY -> {
-                    gui.showMessage("You have to buy this property");
-                    PropertyField property = (PropertyField)movement.EndField;
-                    property.setOwner(player);
-                    playerPayMoney(currentPlayer, property.Value);
-                }
-                case PAY_RENT -> {
-                    gui.showMessage("You have to pay rent");
                     PropertyField property = (PropertyField)movement.EndField;
 
+                    gui.showMessage(String.format("%s, you have been offered to buy this property. Do you accept?", playerName));
+
+                    playerPayMoney(currentPlayer, property.Value);
+                    property.setOwner(player);
+                }
+                case PAY_RENT -> {
+                    PropertyField property = (PropertyField)movement.EndField;
                     Player owner = property.getOwner();
+
+                    gui.showMessage(String.format("%s you were staying at %s's property, and now have to pay rent", playerName, owner.name));
+
                     int rent = property.Value;
                     if (board.playerOwnsBothProperties(currentPlayer, property.PropertyColor)) {
-                        gui.showMessage("Owner owns both properties, so rent is double");
+                        gui.showMessage(String.format("%s owns all properties around, and is now charging double for rent!", owner.name));
                         rent *= 2;
                     }
                     playerPayMoney(currentPlayer, rent);
                     playerGetPaid(owner.ID, rent);
+                }
+                case DRAW_CHANCE_CARD -> {
+                    gui.displayChanceCard("You get a chance card!");
                 }
                 default -> gui.showMessage("Player should now " + action);
             }
