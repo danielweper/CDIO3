@@ -15,6 +15,8 @@ public class App
 {
     static FieldGUI num_Fields = new FieldGUI();
     static GUI_Player[] players;
+    static Player[] logicPlayers;
+
     public static void main(String[] args) {
         GUI gui = new GUI(num_Fields.Showfields());
         SixSidedDie d1 = new SixSidedDie();
@@ -23,6 +25,12 @@ public class App
         int playerAmount = 2;
 
         players = makePlayers(playerAmount, gui);
+        logicPlayers = new Player[playerAmount];
+        for (int i = 0; i < playerAmount; ++i) {
+            GUI_Player guiPlayer = players[i];
+            logicPlayers[i] = new Player(guiPlayer.getName(), guiPlayer.getBalance(), guiPlayer.getNumber());
+        }
+
         BoardGUI board = new BoardGUI(players, gui);
 
         //https://github.com/diplomit-dtu/MatadorGUIGuide/blob/3.2.x/src/main/java/Terning.java
@@ -36,7 +44,9 @@ public class App
             }
             int sum = d1.face + d2.face;
 
-            board.movePlayerByAmount(currentPlayer, sum);
+            PlayerMovement movement = board.movePlayerByAmount(currentPlayer, sum);
+            gui.showMessage("Player should now " + movement.EndField.landedOn(logicPlayers[currentPlayer]));
+
             currentPlayer = (currentPlayer + 1) % playerAmount;
         }
 
