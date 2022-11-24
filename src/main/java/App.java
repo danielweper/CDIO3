@@ -85,7 +85,6 @@ public class App
                 case DRAW_CHANCE_CARD -> {
                     gui.displayChanceCard("You get a chance card!");
                 }
-                default -> gui.showMessage("Player should now " + action);
             }
 
             if (player.account.isBankrupt()) {
