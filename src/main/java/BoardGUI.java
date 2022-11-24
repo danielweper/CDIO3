@@ -39,7 +39,7 @@ public class BoardGUI {
             if (!property.PropertyColor.equals(propertyColor)) {
                 continue;
             }
-            if (property.getOwner() != null || property.getOwner().ID != playerId) {
+            if (property.getOwner() == null || property.getOwner().ID != playerId) {
                 return false;
             }
         }
