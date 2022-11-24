@@ -16,6 +16,7 @@ public class App
     static FieldGUI num_Fields = new FieldGUI();
     static GUI_Player[] players;
     static Player[] logicPlayers;
+    static boolean[] playersInPrison;
 
     public static void main(String[] args) {
         GUI gui = new GUI(num_Fields.Showfields());
@@ -30,6 +31,7 @@ public class App
             GUI_Player guiPlayer = players[i];
             logicPlayers[i] = new Player(guiPlayer.getName(), guiPlayer.getBalance(), guiPlayer.getNumber());
         }
+        playersInPrison = new boolean[playerAmount];
 
         BoardGUI board = new BoardGUI(players, gui);
 
@@ -38,6 +40,15 @@ public class App
         while (true) {
             Player player = logicPlayers[currentPlayer];
             String playerName = player.name;
+            if (playersInPrison[currentPlayer]) {
+                gui.showMessage(String.format("%s, to get out of jail, you have to pay 1 million in bail", playerName));
+
+                if (player.getBalance() < 1) {
+                    gui.showMessage(String.format("%s unfortunately you cannot pay bail, and sit in prison for the rest of your life", playerName));
+                    break;
+                }
+                playerPayMoney(currentPlayer, 1);
+            }
 
             gui.showMessage(String.format("%s roll the dice", playerName));
 
@@ -57,7 +68,7 @@ public class App
             LandOnAction action = movement.EndField.landedOn(player);
             switch (action) {
                 case GO_TO_PRISON -> {
-                    gui.showMessage(String.format("Unfortunately %s was caught speeding, and is sent to prison", playerName));
+                    gui.showMessage(String.format("Unfortunately %s was caught speeding, and is sent to jail", playerName));
                     board.movePlayerToField(currentPlayer, 6);
                 }
                 case BUY_PROPERTY -> {
@@ -65,8 +76,14 @@ public class App
 
                     gui.showMessage(String.format("%s, you have been offered to buy this property. Do you accept?", playerName));
 
-                    playerPayMoney(currentPlayer, property.Value);
-                    property.setOwner(player);
+                    if (player.getBalance() < property.Value) {
+                        gui.showMessage(String.format("%s you don't have enough money to buy this property, and is shamed by your friends", playerName));
+                        player.updateBalance(property.Value * -1);
+                    }
+                    else {
+                        playerPayMoney(currentPlayer, property.Value);
+                        property.setOwner(player);
+                    }
                 }
                 case PAY_RENT -> {
                     PropertyField property = (PropertyField)movement.EndField;
@@ -79,8 +96,15 @@ public class App
                         gui.showMessage(String.format("%s owns all properties around, and is now charging double for rent!", owner.name));
                         rent *= 2;
                     }
-                    playerPayMoney(currentPlayer, rent);
-                    playerGetPaid(owner.ID, rent);
+
+                    if (player.getBalance() < rent) {
+                        gui.showMessage(String.format("%s you don't have enough money to pay for your stay. You are forced to work off your debt to %s", playerName, owner.name));
+                        player.updateBalance(rent * -1);
+                    }
+                    else {
+                        playerPayMoney(currentPlayer, rent);
+                        playerGetPaid(owner.ID, rent);
+                    }
                 }
                 case DRAW_CHANCE_CARD -> {
                     gui.displayChanceCard("You get a chance card!");
@@ -136,78 +160,4 @@ public class App
         }
         return players;
     }
-
-    /*public static void main(String[] args)
-    {
-        System.out.println( "Hello World!" );
-
-        int playerCount = 2;
-        int startingMoney = (new int[] {0, 0, 20, 18, 16})[playerCount];
-
-        Player[] players = new Player[playerCount];
-        for (int i = 0; i < playerCount; i++) {
-            players[i] = new Player("Player " + (i+1), startingMoney, i);
-        }
-
-        DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
-
-        Game game = new Game(players);
-        while (true) {
-            cup.roll();
-            Player currentPlayer = game.getCurrentPlayer();
-            System.out.println(String.format("Starting %s's turn (money: %d)", currentPlayer.name, currentPlayer.getBalance()));
-
-            if (game.isPlayerInPrison(currentPlayer.ID)) {
-                System.out.println("Paying to get out of prison");
-                currentPlayer.updateBalance(-1);
-                game.releasePlayerFromPrison(currentPlayer.ID);
-                game.setPlayerPositionTo(6);
-                System.out.println("New balance: " + currentPlayer.getBalance());
-            }
-
-            PlayerMovement movement = game.movePlayerBy(cup.getSum());
-            System.out.println("Rolled " + cup.getSum());
-            System.out.println("Movement: " + movement);
-
-            LandOnAction gameAction = movement.EndField.landedOn(currentPlayer);
-            System.out.println("Action to perform: " + gameAction);
-            switch (gameAction) {
-                case BUY_PROPERTY -> {
-                    PropertyField property = (PropertyField)movement.EndField;
-                    System.out.println("Property color: " + property.Color);
-                    property.setOwner(currentPlayer);
-                    currentPlayer.updateBalance(property.Value * -1);
-                }
-                case PAY_RENT -> {
-                    PropertyField property = (PropertyField)movement.EndField;
-                    System.out.println("Property color: " + property.Color);
-                    Player owner = property.getOwner();
-
-                    int price = property.Value;
-                    if (owner.equals(game.getOwnerOfSet(property.Color))) {
-                        System.out.println("Owner owns both properties, so you have to pay double");
-                        price *= 2;
-                    }
-                    currentPlayer.updateBalance(price * -1);
-                    property.getOwner().updateBalance(price);
-                }
-                case DRAW_CHANCE_CARD -> {
-                    ChanceCard card = game.drawChanceCard();
-                    System.out.println("Drew " + card);
-                    game.insertChanceCard(card);
-                }
-                case GO_TO_PRISON -> game.setPlayerInPrison(currentPlayer.ID);
-                case NOTHING -> {}
-            }
-
-            System.out.println(String.format("Ending %s's turn (money: %d)", currentPlayer.name, currentPlayer.getBalance()));
-            System.out.println();
-
-            if (currentPlayer.getBalance() < 0) {
-                break;
-            }
-            game.nextTurn();
-        }
-        System.out.println("GAME OVER");
-    }*/
 }
