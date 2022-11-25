@@ -260,9 +260,19 @@ public class App
         ArrayList<String> colorStrings = new ArrayList<>(Arrays.stream(new String[] {"Red", "Blue", "Black", "Green", "Magenta", "Yellow"}).toList());
 
         GUI_Player[] players = new GUI_Player[amount];
-        for (int i=0; i < amount; i++) {
+        String firstName = gui.getUserString("Youngest player, what is your name?");
+        String firstColorString = gui.getUserButtonPressed("Choose a color", colorStrings.toArray(new String[0]));
+        Color firstColor = colors.get(colorStrings.indexOf(firstColorString));
+        GUI_Car firstCar = new GUI_Car(firstColor, firstColor, GUI_Car.Type.CAR, GUI_Car.Pattern.FILL);
+        players[0] = new GUI_Player(firstName, startingBalance, firstCar);
+
+        colors.remove(firstColor);
+        colorStrings.remove(firstColorString);
+        gui.addPlayer(players[0]);
+
+        for (int i = 1; i < amount; i++) {
             String playerName;
-            while(true) {
+            while (true) {
                 playerName = gui.getUserString("Player " + (i + 1) + " what is your name?");
                 boolean nameExist = false;
                 for (int j = 0; j < i; j++) {
@@ -275,8 +285,7 @@ public class App
                     break;
                 }
             }
-            String[] colorStringArray = new String[colorStrings.size()];
-            String colorString = gui.getUserButtonPressed("Choose a color", colorStrings.toArray(colorStringArray));
+            String colorString = gui.getUserButtonPressed("Choose a color", colorStrings.toArray(new String[0]));
             Color playerColor = colors.get(colorStrings.indexOf(colorString));
 
             GUI_Car playerCar = new GUI_Car(playerColor, playerColor, GUI_Car.Type.CAR, GUI_Car.Pattern.FILL);
@@ -285,7 +294,6 @@ public class App
             colors.remove(playerColor);
             colorStrings.remove(colorString);
             gui.addPlayer(players[i]);
-
         }
         return players;
     }
