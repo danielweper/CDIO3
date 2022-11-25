@@ -115,10 +115,6 @@ public class App
                                     breakOutOfLoop = false;
                                 }
 
-
-
-                                gui.displayChanceCard(drawnCard.toString());
-
                                 switch (chanceAction.Event) {
                                     case MOVE_RELATIVE -> {
                                         gui.displayChanceCard(String.format("Move %d squares forward", chanceAction.Value));
@@ -129,7 +125,8 @@ public class App
                                         String fieldName;
                                         switch (chanceAction.Value) {
                                             case 0 -> fieldName = "Start";
-                                            default -> fieldName = String.format("the %dth field");
+                                            case 23 -> fieldName = "The beach";
+                                            default -> fieldName = String.format("the %dth field", chanceAction.Value);
                                         }
                                         gui.displayChanceCard(String.format("%s you move to %s", playerName, fieldName));
                                         gui.showMessage("");
