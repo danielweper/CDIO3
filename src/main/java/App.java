@@ -222,10 +222,7 @@ public class App
     private static GUI_Player[] makePlayers(int amount, GUI gui) {
         int startingBalance = (amount == 2) ? 20 : ((amount == 3) ? 18 : 16);
         ArrayList<Color> colors = new ArrayList<>(Arrays.stream(new Color[] {Color.red, Color.blue, Color.black, Color.green, Color.magenta, Color.yellow}).toList());
-        ArrayList<String> colorStrings = new ArrayList<>();
-        for (Color color : colors) {
-            colorStrings.add(color.toString());
-        }
+        ArrayList<String> colorStrings = new ArrayList<>(Arrays.stream(new String[] {"Red", "Blue", "Black", "Green", "Magenta", "Yellow"}).toList());
 
         GUI_Player[] players = new GUI_Player[amount];
         for (int i=0; i < amount; i++) {
