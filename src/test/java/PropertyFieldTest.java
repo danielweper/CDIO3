@@ -18,7 +18,7 @@ public class PropertyFieldTest extends TestCase {
     public void testThereIsAnOwnerWhenPropertyHasBeenBought(){
         PropertyField propertyField = new PropertyField(3, PropertyColor.GREEN);
 
-        // *her sætter jeg en owner til at være Player og den player bliver lavet på samme linjie
+        // *her sætter jeg en owner til at være Player og den player bliver lavet på samme linje
         propertyField.setOwner(new Player("player1", 1000, 2));
 
         assertNotNull(propertyField.getOwner());
