@@ -48,7 +48,7 @@ public class App
             Player player = logicPlayers[currentPlayer];
             String playerName = player.name;
             if (playersInPrison[currentPlayer]) {
-                gui.showMessage(String.format("%s, to get out of jail, you have to pay 1 million in bail", playerName));
+                gui.showMessage(String.format("%s, to get out of jail, you have to pay 1 in bail", playerName));
 
                 playerPayMoney(currentPlayer, 1);
                 if (player.account.isBankrupt()) {
@@ -67,7 +67,7 @@ public class App
             // Move the player on the board
             PlayerMovement movement = board.movePlayerByAmount(currentPlayer, d1.face);
             if (movement.PassedStart) {
-                gui.showMessage(String.format("You made it all the way around the board %s! You get paid 2 million", playerName));
+                gui.showMessage(String.format("You made it all the way around the board %s! You get paid 2", playerName));
                 playerGetPaid(currentPlayer, 2);
             }
 
@@ -111,65 +111,95 @@ public class App
                             ChanceCardAction chanceAction;
                             if (actions.length == 1) {
                                 chanceAction = actions[0];
+                                if (chanceAction.Event.equals(ChanceCardEvent.GIVE_CARD_TO_OTHER_PLAYER) || chanceAction.Event.equals(ChanceCardEvent.GET_OUT_OF_JAIL_FREE)) {
+                                    breakOutOfLoop = false;
+                                }
+
+
+
+                                gui.displayChanceCard(drawnCard.toString());
+
+                                switch (chanceAction.Event) {
+                                    case MOVE_RELATIVE -> {
+                                        gui.displayChanceCard(String.format("Move %d squares forward", chanceAction.Value));
+                                        gui.showMessage("");
+                                        chanceMovement = board.movePlayerByAmount(currentPlayer, chanceAction.Value);
+                                    }
+                                    case MOVE_TO -> {
+                                        String fieldName;
+                                        switch (chanceAction.Value) {
+                                            case 0 -> fieldName = "Start";
+                                            default -> fieldName = String.format("the %dth field");
+                                        }
+                                        gui.displayChanceCard(String.format("%s you move to %s", playerName, fieldName));
+                                        gui.showMessage("");
+                                        chanceMovement = board.movePlayerToField(currentPlayer, chanceAction.Value);
+                                    }
+                                    case PAY_BANK -> {
+                                        gui.displayChanceCard(String.format("%s now has to pay %d for all the candy they bought", playerName, chanceAction.Value));
+                                        playerPayMoney(currentPlayer, chanceAction.Value);
+                                    }
+                                    case GET_PAID_BY_BANK -> {
+                                        gui.displayChanceCard(String.format("%s gets their allowance of %d paid", playerName, chanceAction.Value));
+                                        playerGetPaid(currentPlayer, chanceAction.Value);
+                                    }
+                                    case GET_PAID_BY_PLAYERS -> {
+                                        gui.displayChanceCard(String.format("It's %s's birthday! Every player gives a gift of %d money", playerName, chanceAction.Value));
+                                        for (int i = 0; i < playerAmount; ++i) {
+                                            if (i == currentPlayer) {
+                                                continue;
+                                            }
+                                            playerPayMoney(i, 1);
+                                        }
+                                        playerGetPaid(currentPlayer, playerAmount);
+                                    }
+                                    case MOVE_TO_COLOR -> {
+                                        PropertyColor color = PropertyColor.values()[chanceAction.Value];
+                                        gui.displayChanceCard(String.format("%s, you have to move to a %s property", playerName, color.toString().toLowerCase()));
+                                        int[] indexes = board.getIndexesOfPropertyColor(color);
+                                        int chosenPosition;
+
+                                        boolean choseFirst = gui.getUserLeftButtonPressed(String.format("Which of the %s fields do you want to go to?", color.toString().toLowerCase()), "The first", "The second");
+                                        if (choseFirst) {
+                                            chosenPosition = indexes[0];
+                                        }
+                                        else {
+                                            chosenPosition = indexes[1];
+                                        }
+
+                                        chanceMovement = board.movePlayerToField(currentPlayer, chosenPosition);
+                                    }
+                                    case GET_PROPERTY_FREE_OR_PAY_OWNER -> {
+                                        PropertyField chanceProperty = (PropertyField)chanceMovement.EndField;
+                                        LandOnAction chanceLandAction = chanceProperty.landedOn(player);
+                                        switch (chanceLandAction) {
+                                            case BUY_PROPERTY -> {
+                                                gui.displayChanceCard(String.format("%s, you get this property for free!", playerName));
+                                                chanceProperty.setOwner(player);
+                                            }
+                                            case PAY_RENT -> {
+                                                gui.displayChanceCard(String.format("Unfortunately the property was already owned, and %s you have to pay rent to the owner", playerName));
+                                                payRent(currentPlayer, chanceProperty, board, gui);
+                                            }
+                                        }
+                                    }
+                                    default -> breakOutOfLoop = false;
+                                }
                             }
                             else {
                                 breakOutOfLoop = false;
                                 break;
-                                // TODO
-                            }
-
-                            switch (chanceAction.Event) {
-                                case MOVE_RELATIVE -> chanceMovement = board.movePlayerByAmount(currentPlayer, chanceAction.Value);
-                                case MOVE_TO -> chanceMovement = board.movePlayerToField(currentPlayer, chanceAction.Value);
-                                case PAY_BANK -> playerPayMoney(currentPlayer, chanceAction.Value);
-                                case GET_PAID_BY_BANK -> playerGetPaid(currentPlayer, chanceAction.Value);
-                                case GET_PAID_BY_PLAYERS -> {
-                                    for (int i = 0; i < playerAmount; ++i) {
-                                        if (i == currentPlayer) {
-                                            continue;
-                                        }
-                                        playerPayMoney(i, 1);
-                                    }
-                                    playerGetPaid(currentPlayer, playerAmount);
-                                }
-                                case MOVE_TO_COLOR -> {
-                                    PropertyColor color = PropertyColor.values()[chanceAction.Value];
-                                    int[] indexes = board.getIndexesOfPropertyColor(color);
-                                    int chosenPosition;
-
-                                    boolean choseFirst = gui.getUserLeftButtonPressed(String.format("Which of the %s fields do you want to go to?", color.name().toLowerCase()), "The first", "The second");
-                                    if (choseFirst) {
-                                        chosenPosition = indexes[0];
-                                    }
-                                    else {
-                                        chosenPosition = indexes[1];
-                                    }
-
-                                    chanceMovement = board.movePlayerToField(currentPlayer, chosenPosition);
-                                    // TODO
-                                }
-                                case GET_PROPERTY_FREE_OR_PAY_OWNER -> {
-                                    PropertyField chanceProperty = (PropertyField)chanceMovement.EndField;
-                                    LandOnAction chanceLandAction = chanceProperty.landedOn(player);
-                                    switch (chanceLandAction) {
-                                        case BUY_PROPERTY -> chanceProperty.setOwner(player);
-                                        case PAY_RENT -> payRent(currentPlayer, chanceProperty, board, gui);
-                                    }
-                                }
-                                default -> breakOutOfLoop = false;
                             }
                         }
 
                         if (breakOutOfLoop) {
                             if (chanceMovement != null && chanceMovement.PassedStart) {
-                                gui.showMessage(String.format("You made it all the way around the board %s! You get paid 2 million", playerName));
+                                gui.showMessage(String.format("You made it all the way around the board %s! You get paid 2", playerName));
                                 playerGetPaid(currentPlayer, 2);
                             }
                             break;
                         }
                     }
-
-                    gui.displayChanceCard(drawnCard.toString());
                 }
             }
 
