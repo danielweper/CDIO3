@@ -29,7 +29,8 @@ public class App
             chanceCards.add(allCards.remove(nextCardIndex));
         }
 
-        int playerAmount = 2;
+        String playerCountString = gui.getUserButtonPressed("How many players are playing?", "2", "3", "4");
+        int playerAmount = Integer.parseInt(playerCountString);
 
         players = makePlayers(playerAmount, gui);
         logicPlayers = new Player[playerAmount];
