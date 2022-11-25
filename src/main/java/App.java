@@ -261,7 +261,20 @@ public class App
 
         GUI_Player[] players = new GUI_Player[amount];
         for (int i=0; i < amount; i++) {
-            String playerName = gui.getUserString("Player " + (i+1) + " what is your name?");
+            String playerName;
+            while(true) {
+                playerName = gui.getUserString("Player " + (i + 1) + " what is your name?");
+                boolean nameExist = false;
+                for (int j = 0; j < i; j++) {
+                    if (players[j] != null && playerName.equals(players[j].getName())) {
+                        nameExist = true;
+                        gui.showMessage(String.format(playerName + " This name already exist. Pick another name"));
+                    }
+                }
+                if(!nameExist){
+                    break;
+                }
+            }
             String[] colorStringArray = new String[colorStrings.size()];
             String colorString = gui.getUserButtonPressed("Choose a color", colorStrings.toArray(colorStringArray));
             Color playerColor = colors.get(colorStrings.indexOf(colorString));
@@ -272,6 +285,7 @@ public class App
             colors.remove(playerColor);
             colorStrings.remove(colorString);
             gui.addPlayer(players[i]);
+
         }
         return players;
     }
