@@ -4,8 +4,7 @@ import gui_fields.GUI_Player;
 import gui_main.GUI;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Hello world!
@@ -17,11 +16,18 @@ public class App
     static GUI_Player[] players;
     static Player[] logicPlayers;
     static boolean[] playersInPrison;
+    static Queue<ChanceCard> chanceCards;
 
     public static void main(String[] args) {
         GUI gui = new GUI(num_Fields.Showfields());
         SixSidedDie d1 = new SixSidedDie();
-        SixSidedDie d2 = new SixSidedDie();
+        chanceCards = new LinkedList<>();
+        List<ChanceCard> allCards = generateChanceCards();
+        Random rng = new Random();
+        while (allCards.size() > 0) {
+            int nextCardIndex = rng.nextInt(allCards.size());
+            chanceCards.add(allCards.remove(nextCardIndex));
+        }
 
         int playerAmount = 2;
 
@@ -43,11 +49,11 @@ public class App
             if (playersInPrison[currentPlayer]) {
                 gui.showMessage(String.format("%s, to get out of jail, you have to pay 1 million in bail", playerName));
 
-                if (player.getBalance() < 1) {
+                playerPayMoney(currentPlayer, 1);
+                if (player.account.isBankrupt()) {
                     gui.showMessage(String.format("%s unfortunately you cannot pay bail, and sit in prison for the rest of your life", playerName));
                     break;
                 }
-                playerPayMoney(currentPlayer, 1);
                 playersInPrison[currentPlayer] = false;
             }
 
@@ -55,12 +61,10 @@ public class App
 
             // Roll the dice
             d1.roll();
-            d2.roll();
-            gui.setDice(d1.face, d2.face);
-            int sum = d1.face + d2.face;
+            gui.setDie(d1.face);
 
             // Move the player on the board
-            PlayerMovement movement = board.movePlayerByAmount(currentPlayer, sum);
+            PlayerMovement movement = board.movePlayerByAmount(currentPlayer, d1.face);
             if (movement.PassedStart) {
                 gui.showMessage(String.format("You made it all the way around the board %s! You get paid 2 million", playerName));
                 playerGetPaid(currentPlayer, 2);
@@ -78,38 +82,80 @@ public class App
 
                     gui.showMessage(String.format("%s, you have been offered to buy this property. Do you accept?", playerName));
 
+                    playerPayMoney(currentPlayer, property.Value);
                     if (player.getBalance() < property.Value) {
                         gui.showMessage(String.format("%s you don't have enough money to buy this property, and is shamed by your friends", playerName));
-                        player.updateBalance(property.Value * -1);
                     }
                     else {
-                        playerPayMoney(currentPlayer, property.Value);
                         property.setOwner(player);
                     }
                 }
                 case PAY_RENT -> {
                     PropertyField property = (PropertyField)movement.EndField;
-                    Player owner = property.getOwner();
-
-                    gui.showMessage(String.format("%s you were staying at %s's property, and now have to pay rent", playerName, owner.name));
-
-                    int rent = property.Value;
-                    if (board.playerOwnsBothProperties(currentPlayer, property.PropertyColor)) {
-                        gui.showMessage(String.format("%s owns all properties around, and is now charging double for rent!", owner.name));
-                        rent *= 2;
-                    }
-
-                    if (player.getBalance() < rent) {
-                        gui.showMessage(String.format("%s you don't have enough money to pay for your stay. You are forced to work off your debt to %s", playerName, owner.name));
-                        player.updateBalance(rent * -1);
-                    }
-                    else {
-                        playerPayMoney(currentPlayer, rent);
-                        playerGetPaid(owner.ID, rent);
-                    }
+                    payRent(currentPlayer, property, board, gui);
                 }
                 case DRAW_CHANCE_CARD -> {
-                    gui.displayChanceCard("You get a chance card!");
+                    ChanceCard drawnCard;
+                    while (true) {
+                        drawnCard = chanceCards.remove();
+                        chanceCards.add(drawnCard);
+                        if (drawnCard.isChoiceCard()) {
+                            continue;
+                        }
+
+                        boolean breakOutOfLoop = true;
+                        PlayerMovement chanceMovement = null;
+                        ArrayList<ChanceCardAction[]> actionsList = drawnCard.getActions();
+                        for (ChanceCardAction[] actions : actionsList) {
+                            ChanceCardAction chanceAction;
+                            if (actions.length == 1) {
+                                chanceAction = actions[0];
+                            }
+                            else {
+                                breakOutOfLoop = false;
+                                break;
+                                // TODO
+                            }
+
+                            switch (chanceAction.Event) {
+                                case MOVE_RELATIVE -> chanceMovement = board.movePlayerByAmount(currentPlayer, chanceAction.Value);
+                                case MOVE_TO -> chanceMovement = board.movePlayerToField(currentPlayer, chanceAction.Value);
+                                case PAY_BANK -> playerPayMoney(currentPlayer, chanceAction.Value);
+                                case GET_PAID_BY_BANK -> playerGetPaid(currentPlayer, chanceAction.Value);
+                                case GET_PAID_BY_PLAYERS -> {
+                                    for (int i = 0; i < playerAmount; ++i) {
+                                        if (i == currentPlayer) {
+                                            continue;
+                                        }
+                                        playerPayMoney(i, 1);
+                                    }
+                                    playerGetPaid(currentPlayer, playerAmount);
+                                }
+                                case MOVE_TO_COLOR -> {
+                                    // TODO
+                                }
+                                case GET_PROPERTY_FREE_OR_PAY_OWNER -> {
+                                    PropertyField chanceProperty = (PropertyField)chanceMovement.EndField;
+                                    LandOnAction chanceLandAction = chanceProperty.landedOn(player);
+                                    switch (chanceLandAction) {
+                                        case BUY_PROPERTY -> chanceProperty.setOwner(player);
+                                        case PAY_RENT -> payRent(currentPlayer, chanceProperty, board, gui);
+                                    }
+                                }
+                                default -> breakOutOfLoop = false;
+                            }
+                        }
+
+                        if (breakOutOfLoop) {
+                            if (chanceMovement != null && chanceMovement.PassedStart) {
+                                gui.showMessage(String.format("You made it all the way around the board %s! You get paid 2 million", playerName));
+                                playerGetPaid(currentPlayer, 2);
+                            }
+                            break;
+                        }
+                    }
+
+                    gui.displayChanceCard(drawnCard.toString());
                 }
             }
 
@@ -120,6 +166,27 @@ public class App
             currentPlayer = (currentPlayer + 1) % playerAmount;
         }
         gui.showMessage("Game is over");
+    }
+
+    private static void payRent(int payingPlayerId, PropertyField property, BoardGUI board, GUI gui) {
+        Player payingPlayer = logicPlayers[payingPlayerId];
+        Player owner = property.getOwner();
+
+        gui.showMessage(String.format("%s you were staying at %s's property, and now have to pay rent", payingPlayer.name, owner.name));
+
+        int rent = property.Value;
+        if (board.playerOwnsBothProperties(payingPlayerId, property.PropertyColor)) {
+            gui.showMessage(String.format("%s owns all properties around, and is now charging double for rent!", owner.name));
+            rent *= 2;
+        }
+
+        playerPayMoney(payingPlayerId, rent);
+        if (payingPlayer.getBalance() < rent) {
+            gui.showMessage(String.format("%s you don't have enough money to pay for your stay. You are forced to work off your debt to %s", payingPlayer.name, owner.name));
+        }
+        else {
+            playerGetPaid(owner.ID, rent);
+        }
     }
 
     private static void updatePlayerBalance(int playerIndex, int balanceChange) {
@@ -138,7 +205,7 @@ public class App
         updatePlayerBalance(playerIndex, moneyToGet);
     }
 
-    public static GUI_Player[] makePlayers(int amount, GUI gui) {
+    private static GUI_Player[] makePlayers(int amount, GUI gui) {
         int startingBalance = (amount == 2) ? 20 : ((amount == 3) ? 18 : 16);
         ArrayList<Color> colors = new ArrayList<>(Arrays.stream(new Color[] {Color.red, Color.blue, Color.black, Color.green, Color.magenta, Color.yellow}).toList());
         ArrayList<String> colorStrings = new ArrayList<>();
@@ -161,5 +228,100 @@ public class App
             gui.addPlayer(players[i]);
         }
         return players;
+    }
+
+    private static List<ChanceCard> generateChanceCards() {
+        List<ChanceCard> allChanceCards = new ArrayList<>();
+        // Commonly used actions
+        ChanceCardAction takeAnotherCard = new ChanceCardAction(ChanceCardEvent.TAKE_ANOTHER_CARD, 1);
+        ChanceCardAction getForFreeOrPayOwner = new ChanceCardAction(ChanceCardEvent.GET_PROPERTY_FREE_OR_PAY_OWNER, 0);
+
+        // Reused variable
+        ChanceCard card;
+
+        // Make all the give to other players cards
+        for (int i = 0; i < 4; i++) {
+            card = new ChanceCard();
+            card.addAction(new ChanceCardAction(ChanceCardEvent.GIVE_CARD_TO_OTHER_PLAYER, i));
+            card.addAction(takeAnotherCard.copy());
+
+            allChanceCards.add(card);
+        }
+
+        // Make the move to start card
+        card = new ChanceCard();
+        card.addAction(new ChanceCardAction(ChanceCardEvent.MOVE_TO, 0));
+        allChanceCards.add(card);
+
+        // Make the move to last field card
+        card = new ChanceCard();
+        card.addAction(new ChanceCardAction(ChanceCardEvent.MOVE_TO, 23));
+        allChanceCards.add(card);
+
+        // Make the move to and pay card
+        card = new ChanceCard();
+        card.addChoice(new ChanceCardAction(ChanceCardEvent.MOVE_TO, 10), getForFreeOrPayOwner.copy());
+        allChanceCards.add(card);
+
+        // Make the pay the bank card
+        card = new ChanceCard();
+        card.addAction(new ChanceCardAction(ChanceCardEvent.PAY_BANK, 2));
+        allChanceCards.add(card);
+
+        // Make the get money from the bank card
+        card = new ChanceCard();
+        card.addAction(new ChanceCardAction(ChanceCardEvent.GET_PAID_BY_BANK, 2));
+        allChanceCards.add(card);
+
+        // Make the get money from the other players card
+        card = new ChanceCard();
+        card.addAction(new ChanceCardAction(ChanceCardEvent.GET_PAID_BY_PLAYERS, 1));
+        allChanceCards.add(card);
+
+        // Make the move up to 5 squares card
+        ChanceCardAction[] moveActions = new ChanceCardAction[5];
+        for (int i = 0; i < 5; i++) {
+            moveActions[i] = new ChanceCardAction(ChanceCardEvent.MOVE_RELATIVE, i+1);
+        }
+        card = new ChanceCard();
+        card.addChoice(moveActions);
+        allChanceCards.add(card);
+
+        // Make the move 1 or take another card, card
+        card = new ChanceCard();
+        card.addChoice(new ChanceCardAction(ChanceCardEvent.MOVE_RELATIVE, 1), takeAnotherCard.copy());
+        allChanceCards.add(card);
+
+        // Make get out of jail free card
+        card = new ChanceCard();
+        card.addAction(new ChanceCardAction(ChanceCardEvent.GET_OUT_OF_JAIL_FREE, 0));
+        allChanceCards.add(card);
+
+        // Make all the move to specific color cards
+        PropertyColor[] specificPropertyColors = new PropertyColor[] {PropertyColor.ORANGE, PropertyColor.LIGHT_BLUE, PropertyColor.RED};
+        for (int i = 0; i < 3; i++) {
+            ChanceCardAction moveToColorAction = new ChanceCardAction(ChanceCardEvent.MOVE_TO_COLOR, specificPropertyColors[i].ordinal());
+            card = new ChanceCard();
+            card.addAction(moveToColorAction);
+            card.addAction(getForFreeOrPayOwner.copy());
+
+            allChanceCards.add(card);
+        }
+
+        // Make all the move to choice of cards
+        PropertyColor[][] propertyColorChoices = new PropertyColor[][] { {PropertyColor.ORANGE, PropertyColor.GREEN}, {PropertyColor.MAGENTA, PropertyColor.DARK_BLUE}, {PropertyColor.LIGHT_BLUE, PropertyColor.RED}, {PropertyColor.BROWN, PropertyColor.YELLOW}};
+        for (int i = 0; i < 4; i++) {
+            PropertyColor[] choices = propertyColorChoices[i];
+            ChanceCardAction moveToFirstColorAction = new ChanceCardAction(ChanceCardEvent.MOVE_TO_COLOR, choices[0].ordinal());
+            ChanceCardAction moveToSecondColorAction = new ChanceCardAction(ChanceCardEvent.MOVE_TO_COLOR, choices[1].ordinal());
+            card = new ChanceCard();
+            card.addChoice(moveToFirstColorAction, moveToSecondColorAction);
+            card.addAction(getForFreeOrPayOwner.copy());
+
+            allChanceCards.add(card);
+        }
+
+        // Return the made array
+        return allChanceCards;
     }
 }

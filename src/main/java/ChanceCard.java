@@ -2,9 +2,11 @@ import java.util.ArrayList;
 
 public class ChanceCard {
     private ArrayList<ChanceCardAction[]> actions;
+    private boolean hasChoice;
 
     public ChanceCard() {
         this.actions = new ArrayList<>();
+        hasChoice = false;
     }
 
     public void addAction(ChanceCardAction action) {
@@ -13,10 +15,17 @@ public class ChanceCard {
 
     public void addChoice(ChanceCardAction... actions) {
         this.actions.add(actions);
+        if (actions.length > 1) {
+            hasChoice = true;
+        }
     }
 
     public ArrayList<ChanceCardAction[]> getActions() {
         return actions;
+    }
+
+    public boolean isChoiceCard() {
+        return hasChoice;
     }
 
     @Override

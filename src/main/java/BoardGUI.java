@@ -46,6 +46,24 @@ public class BoardGUI {
         return true;
     }
 
+    public int[] getIndexesOfPropertyColor(PropertyColor propertyColor) {
+        int[] indexes = new int[2];
+
+        int indexIndex = 0;
+        for (int i = 0; i < boardLogic.NUMBER_OF_FIELDS; ++i) {
+            GameField field = boardLogic.getFieldAt(i);
+            if (!(field instanceof PropertyField property)) {
+                continue;
+            }
+
+            if (property.PropertyColor.equals(propertyColor)) {
+                indexes[indexIndex++] = i;
+            }
+        }
+
+        return indexes;
+    }
+
     private void updatePlayerGraphicPosition(int playerId, PlayerMovement movement) {
         GUI_Player playerToMove = players[playerId];
 
