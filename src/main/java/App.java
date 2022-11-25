@@ -132,6 +132,26 @@ public class App
                                     playerGetPaid(currentPlayer, playerAmount);
                                 }
                                 case MOVE_TO_COLOR -> {
+                                    PropertyColor color = PropertyColor.values()[chanceAction.Value];
+                                    int[] indexes = board.getIndexesOfPropertyColor(color);
+                                    int currentPlayerPos = board.getPlayerPosition(currentPlayer);
+                                    int chosenPosition = -1;
+                                    if (indexes[0] == currentPlayerPos) {
+                                        chosenPosition = indexes[1];
+                                    }
+                                    else if (indexes[1] == currentPlayerPos) {
+                                        chosenPosition = indexes[0];
+                                    }
+                                    else {
+                                        boolean choseFirst = gui.getUserLeftButtonPressed(String.format("Which of the %s fields do you want to go to?", color.name().toLowerCase()), "The first", "The second");
+                                        if (choseFirst) {
+                                            chosenPosition = indexes[0];
+                                        }
+                                        else {
+                                            chosenPosition = indexes[1];
+                                        }
+                                    }
+                                    chanceMovement = board.movePlayerToField(currentPlayer, chosenPosition);
                                     // TODO
                                 }
                                 case GET_PROPERTY_FREE_OR_PAY_OWNER -> {

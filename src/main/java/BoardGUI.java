@@ -29,6 +29,10 @@ public class BoardGUI {
         return movement;
     }
 
+    public int getPlayerPosition(int playerId) {
+        return boardLogic.getPlayerPosition(playerId);
+    }
+
     public boolean playerOwnsBothProperties(int playerId, PropertyColor propertyColor) {
         for (int i = 0; i < boardLogic.NUMBER_OF_FIELDS; ++i) {
             GameField field = boardLogic.getFieldAt(i);
