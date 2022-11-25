@@ -84,11 +84,10 @@ public class App
                     gui.showMessage(String.format("%s, you have been offered to buy this property. Do you accept?", playerName));
 
                     playerPayMoney(currentPlayer, property.Value);
-                    if (player.getBalance() < property.Value) {
+                    property.setOwner(player);
+
+                    if (player.account.isBankrupt()) {
                         gui.showMessage(String.format("%s you don't have enough money to buy this property, and is shamed by your friends", playerName));
-                    }
-                    else {
-                        property.setOwner(player);
                     }
                 }
                 case PAY_RENT -> {
@@ -206,7 +205,15 @@ public class App
 
             currentPlayer = (currentPlayer + 1) % playerAmount;
         }
-        gui.showMessage("Game is over");
+        Player winner = logicPlayers[currentPlayer];
+        for (int i = 0; i < playerAmount; ++i) {
+            if (logicPlayers[i].getBalance() > winner.getBalance()) {
+                winner = logicPlayers[i];
+            }
+        }
+
+        gui.displayChanceCard(winner.name + " has won the game!");
+        gui.showMessage(String.format("Game is over\n%s has won", winner.name));
     }
 
     private static void payRent(int payingPlayerId, PropertyField property, BoardGUI board, GUI gui) {
@@ -222,11 +229,10 @@ public class App
         }
 
         playerPayMoney(payingPlayerId, rent);
-        if (payingPlayer.getBalance() < rent) {
+        playerGetPaid(owner.ID, rent);
+
+        if (payingPlayer.account.isBankrupt()) {
             gui.showMessage(String.format("%s you don't have enough money to pay for your stay. You are forced to work off your debt to %s", payingPlayer.name, owner.name));
-        }
-        else {
-            playerGetPaid(owner.ID, rent);
         }
     }
 
