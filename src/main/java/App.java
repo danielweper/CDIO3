@@ -85,6 +85,7 @@ public class App
 
                     playerPayMoney(currentPlayer, property.Value);
                     property.setOwner(player);
+                    gui.getFields()[movement.EndIndex].setDescription("Owned by " + playerName);
 
                     if (player.account.isBankrupt()) {
                         gui.showMessage(String.format("%s you don't have enough money to buy this property, and is shamed by your friends", playerName));
@@ -172,6 +173,7 @@ public class App
                                             case BUY_PROPERTY -> {
                                                 gui.displayChanceCard(String.format("%s, you get this property for free!", playerName));
                                                 chanceProperty.setOwner(player);
+                                                gui.getFields()[chanceMovement.EndIndex].setDescription("Owned by " + playerName);
                                             }
                                             case PAY_RENT -> {
                                                 gui.displayChanceCard(String.format("Unfortunately the property was already owned, and %s you have to pay rent to the owner", playerName));
