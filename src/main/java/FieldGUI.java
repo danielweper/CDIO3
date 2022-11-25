@@ -19,11 +19,13 @@ public class FieldGUI {
         fields[1].setTitle("Burger place");
         fields[1].setSubText("1");
         fields[1].setBackGroundColor(brown);
+        fields[1].setDescription("Not owned");
 
         fields[2] = new GUI_Street();
         fields[2].setTitle("Pizzeria");
         fields[2].setSubText("1");
         fields[2].setBackGroundColor(brown);
+        fields[2].setDescription("Not owned");
 
         fields[3] = new GUI_Chance();
         fields[3].setTitle("Chance");
@@ -35,11 +37,13 @@ public class FieldGUI {
         fields[4].setTitle("Candy store");
         fields[4].setSubText("1");
         fields[4].setBackGroundColor(Color.CYAN);
+        fields[4].setDescription("Not owned");
 
         fields[5] = new GUI_Street();
         fields[5].setTitle("Ice cream stand");
         fields[5].setSubText("1");
         fields[5].setBackGroundColor(Color.CYAN);
+        fields[5].setDescription("Not owned");
 
         fields[6] = new GUI_Jail();
         fields[6].setTitle("Jail");
@@ -49,11 +53,13 @@ public class FieldGUI {
         fields[7].setTitle("Museum");
         fields[7].setSubText("2");
         fields[7].setBackGroundColor(Color.MAGENTA);
+        fields[7].setDescription("Not owned");
 
         fields[8] = new GUI_Street();
         fields[8].setTitle("Library");
         fields[8].setSubText("2");
         fields[8].setBackGroundColor(Color.MAGENTA);
+        fields[8].setDescription("Not owned");
 
         fields[9] = new GUI_Chance();
         fields[9].setTitle("Chance");
@@ -65,11 +71,13 @@ public class FieldGUI {
         fields[10].setTitle("Skate park");
         fields[10].setSubText("2");
         fields[10].setBackGroundColor(Color.ORANGE);
+        fields[10].setDescription("Not owned");
 
         fields[11] = new GUI_Street();
         fields[11].setTitle("Swimming pool");
         fields[11].setSubText("2");
         fields[11].setBackGroundColor(Color.ORANGE);
+        fields[11].setDescription("Not owned");
 
         fields[12] = new GUI_Refuge();
         fields[12].setTitle("Free parking");
@@ -80,11 +88,13 @@ public class FieldGUI {
         fields[13].setTitle("Arcade");
         fields[13].setSubText("3");
         fields[13].setBackGroundColor(Color.RED);
+        fields[13].setDescription("Not owned");
 
         fields[14] = new GUI_Street();
         fields[14].setTitle("Cinema");
         fields[14].setSubText("3");
         fields[14].setBackGroundColor(Color.RED);
+        fields[14].setDescription("Not owned");
 
         fields[15] = new GUI_Chance();
         fields[15].setTitle("Chance");
@@ -96,11 +106,13 @@ public class FieldGUI {
         fields[16].setTitle("Toy store");
         fields[16].setSubText("3");
         fields[16].setBackGroundColor(Color.YELLOW);
+        fields[16].setDescription("Not owned");
 
         fields[17] = new GUI_Street();
         fields[17].setTitle("Pet shop");
         fields[17].setSubText("3");
         fields[17].setBackGroundColor(Color.YELLOW);
+        fields[17].setDescription("Not owned");
 
         fields[18] = new GUI_Jail();
         fields[18].setTitle("Go to jail");
@@ -111,11 +123,13 @@ public class FieldGUI {
         fields[19].setTitle("Bowling ally");
         fields[19].setSubText("4");
         fields[19].setBackGroundColor(Color.GREEN);
+        fields[19].setDescription("Not owned");
 
         fields[20] = new GUI_Street();
         fields[20].setTitle("Zoo");
         fields[20].setSubText("4");
         fields[20].setBackGroundColor(Color.GREEN);
+        fields[20].setDescription("Not owned");
 
         fields[21] = new GUI_Chance();
         fields[21].setTitle("Chance");
@@ -127,11 +141,13 @@ public class FieldGUI {
         fields[22].setTitle("Water park");
         fields[22].setSubText("5");
         fields[22].setBackGroundColor(Color.BLUE);
+        fields[22].setDescription("Not owned");
 
         fields[23] = new GUI_Street();
         fields[23].setTitle("The beach");
         fields[23].setSubText("5");
         fields[23].setBackGroundColor(Color.BLUE);
+        fields[23].setDescription("Not owned");
 
         return fields;
     }
